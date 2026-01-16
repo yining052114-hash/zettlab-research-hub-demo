@@ -151,16 +151,16 @@
       right: 50%;
       margin-left: -50vw;
       margin-right: -50vw;
+      display: flex;
+      justify-content: center;
     }
     .filter-bar {
       display: flex;
       gap: 8px;
-      padding: 16px 0;
+      padding: 16px 24px;
       overflow-x: auto;
       max-width: 1200px;
-      margin: 0 auto;
-      padding-left: 24px;
-      padding-right: 24px;
+      width: 100%;
     }
     .filter-item {
       padding: 8px 20px;
@@ -327,7 +327,7 @@
           <div class="brand-logo"></div>
           <div class="brand-text">
             <strong>Zettlab Research Hub</strong>
-            <span>用证据驱动 NAS 体验决策 / Evidence-driven NAS UX</span>
+            <span>用证据驱动 NAS 体验决策</span>
           </div>
         </a>
         <nav class="nav">
@@ -435,6 +435,7 @@
             <h3>命名格式 / Naming Pattern</h3>
             <div class="code-block">[YYYY-MM-DD]_[Surface]_[Topic]_[Method]_[Version]</div>
             <p style="margin-top:12px">示例：2026-01-16_DesktopOS_Onboarding_UT_v1</p>
+            <button class="btn" style="margin-top:12px" onclick="copyText('[YYYY-MM-DD]_[Surface]_[Topic]_[Method]_[Version]')">复制命名规则 / Copy Rule</button>
           </div>
           <div class="value-card" style="grid-column: span 2">
             <h3>必选归档项 / Required Artifacts</h3>
@@ -516,7 +517,7 @@
       methods: [
         { id: "interview", cat: "qual", title: "半结构化访谈", en: "Interviews", when: "理解动机、担忧、心智模型与决策原因。", out: ["洞察卡片", "心智模型"], notes: "关注数据安全焦虑、术语理解。" },
         { id: "ut", cat: "qual", title: "任务型可用性测试", en: "Usability Testing", when: "验证流程是否能完成、哪里卡住、错误点。", out: ["成功率", "问题清单"], notes: "适用于首次配置、存储创建、备份。" },
-        { id: "context", cat: "qual", title: "情境走查", en: "Contextual Inquiry", when: "在真实环境中观察实际行为。", out: ["环境约束", "任务链"], notes: "验证硬件摆放对操作的影响。" },
+        { id: "context", cat: "qual", title: "情境走查", en: "Contextual Inquiry", when: "在真实环境中观察实际行为。", out: ["环境约束", "真实任务链"], notes: "验证硬件摆放对操作的影响。" },
         { id: "survey", cat: "quant", title: "问卷（规模化）", en: "Surveys", when: "快速验证偏好/满意度。", out: ["趋势分布", "基线指标"], notes: "适合做前后对比。" },
         { id: "cardsort", cat: "ia", title: "卡片分类", en: "Card Sorting", when: "验证导航与命名是否符合直觉。", out: ["IA 建议"], notes: "适合侧边导航、功能命名。" },
         { id: "treetest", cat: "ia", title: "Tree Testing", en: "Tree Testing", when: "验证‘找得到’与路径直觉。", out: ["找到率"], notes: "适合验证设置/权限路径。" }
@@ -680,7 +681,11 @@
 
     function copyTemplate(id) {
       const t = DATA.templates.find(x => x.id === id);
-      navigator.clipboard.writeText(t.content).then(() => {
+      copyText(t.content);
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
         const toast = document.getElementById('toast');
         toast.style.display = 'block';
         setTimeout(() => toast.style.display = 'none', 2000);
@@ -696,7 +701,6 @@
     // Search
     document.getElementById('searchInput').addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase();
-      // Simple search logic for demo
       const cards = document.querySelectorAll('.item-card');
       cards.forEach(c => {
         const text = c.innerText.toLowerCase();
