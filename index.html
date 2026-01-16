@@ -409,6 +409,13 @@
       flex-wrap: wrap;
       align-items:center;
       margin: 12px 0 14px;
+      position: sticky;
+      top: 64px; /* 紧贴在 topbar 下方 */
+      z-index: 40;
+      background: var(--bg);
+      padding: 10px 0;
+      backdrop-filter: saturate(1.1) blur(14px);
+      -webkit-backdrop-filter: saturate(1.1) blur(14px);
     }
     .chip{
       border: 1px solid var(--stroke);
