@@ -273,14 +273,13 @@
                 </div>
             </div>
             <nav class="nav">
-                <a href="#overview" class="active" data-i18n="nav_overview">概览</a>
-                <a href="#sop" data-i18n="nav_sop">流程</a>
+                <a href="#sop" class="active" data-i18n="nav_sop">流程</a>
                 <a href="#methods" data-i18n="nav_methods">方法库</a>
                 <a href="#templates" data-i18n="nav_templates">模板</a>
             </nav>
             <div class="actions">
                 <div class="search-box">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                     <input type="text" id="q" placeholder="Search...">
                 </div>
                 <button class="btn-icon" id="langBtn">CN/EN</button>
@@ -290,8 +289,8 @@
     </header>
 
     <main class="container">
-        <section class="hero" id="overview">
-            <h2 class="hover-translate" data-i18n="hero_title" data-translation="Zettlab Research Hub">Zettlab Research Hub</h2>
+        <section class="hero">
+            <h2 data-i18n="hero_title">Zettlab Research Hub</h2>
             <p data-i18n="hero_sub">统一 NAS 桌面端、管理端与 App 的研究标准。让结论可复现、可行动、可验证。</p>
             <div class="hero-btns">
                 <button class="btn-primary" data-i18n="btn_start">发起研究</button>
@@ -376,7 +375,10 @@
             ],
             templates: [
                 { id: "tpl_plan", cat: "plan", zh: { title: "研究计划 (Research Plan)", desc: "目标/问题/方法/样本/风险/指标/交付物。", content: "# 研究计划 (v1)\n- 背景与目标：\n- 核心问题 (<=3)：\n- 假设 (H1/H2/H3)：\n- 方法组合：\n- 样本与分层：\n- 任务范围：\n- 指标：\n- 风险与隐私：\n- 时间线：\n- 交付物：结论摘要 + 洞察卡片 + 行动项" }, en: { title: "Research Plan", desc: "Goals/questions/methods/sample/risks/metrics/deliverables.", content: "# Research Plan (v1)\n- Background & goals:\n- Key questions (<=3):\n- Hypotheses (H1/H2/H3):\n- Method mix:\n- Sample & quotas:\n- Task scope:\n- Metrics:\n- Risks & privacy:\n- Timeline:\n- Deliverables: 1-page summary + insight cards + actions" } },
-                { id: "tpl_ut_desktop", cat: "ut", zh: { title: "桌面端 UT 脚本 (Onboarding)", desc: "首次进入→创建存储→文件管理→备份→任务中心→预警处理。", content: "# Desktop OS UT Script\nT1 进入首页\nT2 存储创建\nT3 文件管理\nT4 批量操作\nT5 备份\nT6 任务中心\nT7 预警处理" }, en: { title: "Desktop OS UT Script", desc: "First entry → storage → files → backup → task center → alerts.", content: "# Desktop OS UT Script\nT1 Home\nT2 Storage\nT3 Files\nT4 Batch\nT5 Backup\nT6 Tasks\nT7 Alerts" } }
+                { id: "tpl_ut_desktop", cat: "ut", zh: { title: "桌面端 UT 脚本 (Onboarding)", desc: "首次进入→创建存储→文件管理→备份→任务中心→预警处理。", content: "# Desktop OS UT Script\nT1 进入首页\nT2 存储创建\nT3 文件管理\nT4 批量操作\nT5 备份\nT6 任务中心\nT7 预警处理" }, en: { title: "Desktop OS UT Script", desc: "First entry → storage → files → backup → task center → alerts.", content: "# Desktop OS UT Script\nT1 Home\nT2 Storage\nT3 Files\nT4 Batch\nT5 Backup\nT6 Tasks\nT7 Alerts" } },
+                { id: "tpl_screener", cat: "screener", zh: { title: "招募筛选表 (Screener)", desc: "新手/熟手/管理员分层招募标准与配额。", content: "# 招募筛选表\n- 目标样本量：N=12\n- 分层标准：\n  1. 新手 (N=4)：无 NAS 使用经验，有数据备份需求。\n  2. 熟手 (N=4)：使用过竞品，关注性能与扩展性。\n  3. 管理员 (N=4)：负责工作室/家庭多用户管理。\n- 排除标准：行业相关人员、近期参加过类似测试者。" }, en: { title: "Recruitment Screener", desc: "Quotas and criteria for Novice/Expert/Admin segments.", content: "# Recruitment Screener\n- Target Sample: N=12\n- Segments:\n  1. Novice (N=4): No NAS experience, has backup needs.\n  2. Expert (N=4): Competitor user, focuses on performance.\n  3. Admin (N=4): Manages multi-user environments.\n- Exclusion: Industry professionals, recent participants." } },
+                { id: "tpl_insight", cat: "insight", zh: { title: "洞察卡片 (Insight Card)", desc: "标准格式：证据 → 含义 → 机会点。", content: "# 洞察卡片\n- 标题：[简短描述发现]\n- 证据 (Evidence)：[用户原话/行为截图/录屏时间戳]\n- 含义 (Meaning)：[为什么会这样？用户的心智模型是什么？]\n- 机会点 (Opportunity)：[我们可以如何改进？对设计/产品的建议]" }, en: { title: "Insight Card", desc: "Standard format: Evidence → Meaning → Opportunity.", content: "# Insight Card\n- Title: [Short discovery description]\n- Evidence: [Quotes/Screenshots/Timestamps]\n- Meaning: [Why? What is the mental model?]\n- Opportunity: [How to improve? Design/Product suggestions]" } },
+                { id: "tpl_repo", cat: "repo", zh: { title: "研究归档清单 (Archive)", desc: "确保研究可追溯的完整包清单。", content: "# 研究归档清单\n- [ ] 研究计划 (Final)\n- [ ] 招募筛选表与脱敏名单\n- [ ] 访谈/测试脚本\n- [ ] 原始录音/录像 (链接)\n- [ ] 亲和图/分析过程记录\n- [ ] 最终报告 (PDF/PPT)\n- [ ] 洞察卡片集 (JSON/CSV)\n- [ ] 行动项跟踪表 (Jira/Notion)" }, en: { title: "Research Archive Checklist", desc: "Full package checklist for traceability.", content: "# Research Archive Checklist\n- [ ] Research Plan (Final)\n- [ ] Screener & Anonymized List\n- [ ] Scripts/Guides\n- [ ] Raw Recordings (Links)\n- [ ] Analysis/Affinity Maps\n- [ ] Final Report (PDF/PPT)\n- [ ] Insight Card Collection\n- [ ] Action Item Tracker" } }
             ]
         };
 
