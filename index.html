@@ -296,29 +296,73 @@
     .gov-box p { font-size: 13px; color: var(--text-secondary); }
 
     .gov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .gov-card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 24px; border-radius: var(--radius-lg); }
-    .gov-card h3 { font-size: 18px; margin-bottom: 20px; border-left: 4px solid var(--accent); padding-left: 12px; }
+    .gov-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 32px;
+      border-radius: var(--radius-xl);
+    }
+    .gov-card h3 { font-size: 20px; margin-bottom: 24px; }
     .gov-list { list-style: none; }
-    .gov-list li { margin-bottom: 12px; font-size: 14px; color: var(--text-secondary); display: flex; gap: 10px; }
-    .gov-list li::before { content: "•"; color: var(--accent); }
+    .gov-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--card-border);
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .gov-list li:last-child { border-bottom: none; }
+    .gov-list li::before { content: "•"; color: var(--accent); margin-right: 12px; }
+
+    /* Repository */
+    .repo-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      margin-top: 40px;
+    }
+    .repo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .repo-code {
+      background: var(--pre-bg);
+      padding: 24px;
+      border-radius: var(--radius-md);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      position: relative;
+    }
+    .repo-code button {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-primary);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+    }
 
     /* Modal */
     .modal-overlay {
       position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(10px);
-      z-index: 200;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 24px;
     }
-    [data-theme="dark"] .modal-overlay { background: rgba(0,0,0,0.8); }
-    .modal-overlay.active { display: flex; }
+    .modal-overlay.show { display: flex; }
     .modal {
       background: var(--modal-bg);
-      border: 1px solid var(--card-border);
       width: 100%;
       max-width: 800px;
       max-height: 90vh;
@@ -326,36 +370,50 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.2);
     }
-    [data-theme="dark"] .modal { box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
-    .modal-header { padding: 24px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; }
+    .modal-header {
+      padding: 24px 32px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-close { background: none; border: none; font-size: 24px; color: var(--text-secondary); cursor: pointer; }
     .modal-body { padding: 32px; overflow-y: auto; }
-    .modal-close { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 24px; }
+    .modal-body pre {
+      background: var(--pre-bg);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      white-space: pre-wrap;
+      color: var(--text-primary);
+    }
 
     /* Toast */
     .toast {
       position: fixed;
-      bottom: 32px;
+      bottom: 40px;
       left: 50%;
-      transform: translateX(-50%) translateY(100px);
+      transform: translateX(-50%);
       background: var(--text-primary);
       color: var(--bg);
       padding: 12px 24px;
       border-radius: 99px;
+      font-size: 14px;
       font-weight: 600;
-      z-index: 300;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 2000;
+      display: none;
     }
-    .toast.active { transform: translateX(-50%) translateY(0); }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 768px) {
-      .hero h1 { font-size: 36px; }
-      .value-grid, .gov-flow, .gov-grid, .sop-detail-grid { grid-template-columns: 1fr; }
-      .topbar-inner { height: auto; padding: 16px 0; flex-direction: column; gap: 16px; }
-      .nav { overflow-x: auto; width: 100%; padding-bottom: 8px; }
+      .hero h1 { font-size: 40px; }
+      .value-grid, .grid, .gov-flow, .gov-grid, .repo-grid, .sop-detail-grid { grid-template-columns: 1fr; }
+      .topbar-inner { padding: 0 16px; }
+      .nav { display: none; }
     }
   </style>
 </head>
@@ -368,11 +426,11 @@
         <div class="brand-logo"></div>
         <div class="brand-text">
           <strong>Zettlab Research Hub</strong>
-          <span>用证据驱动 NAS 体验决策</span>
+          <span id="brandSub">用证据驱动 NAS 体验决策</span>
         </div>
       </a>
       <nav class="nav">
-        <a href="#home" class="active">首页</a>
+        <a href="#overview" class="active">首页</a>
         <a href="#sop">SOP 流程</a>
         <a href="#methods">方法库</a>
         <a href="#templates">模板</a>
@@ -380,133 +438,157 @@
       </nav>
       <div class="top-tools">
         <div class="search-box">
-          <input type="text" id="searchInput" placeholder="搜索方法 / 模板 / 研究案例...">
+          <input type="text" id="searchInput" placeholder="搜索方法 / 模板 / 研究案例..." oninput="handleSearch()">
         </div>
-        <button class="btn-tool" id="langToggle">CN/EN</button>
-        <button class="btn-tool" id="themeToggle">Dark</button>
+        <button class="btn-tool" onclick="toggleLang()">CN/EN</button>
+        <button class="btn-tool" id="themeToggle" onclick="toggleTheme()">Dark</button>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-      <div class="container">
-        <h1 id="heroTitle">用研规范与知识库</h1>
-        <p id="heroDesc">为 NAS 桌面端、Web 管理端及移动端打造的标准化研究体系，确保研究结果可复现、可行动、可验证。</p>
-        <div class="hero-actions">
-          <button class="btn-primary" onclick="showTemplate('plan')">发起研究</button>
-          <button class="btn-secondary" onclick="showTemplate('ut')">运行 UT</button>
-          <button class="btn-secondary" onclick="showTemplate('archive')">归档规范</button>
-        </div>
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero" id="overview">
+      <h1 id="heroTitle">用研规范与知识库</h1>
+      <p id="heroDesc">为 NAS 桌面端、Web 管理端及移动端打造的标准化研究体系，确保研究结果可复现、可行动、可验证。</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="openTemplate(1)" id="ctaStart">发起研究 / Start Study</button>
+        <button class="btn-secondary" onclick="openTemplate(2)" id="ctaUT">运行 UT / Run UT</button>
+        <button class="btn-secondary" onclick="openTemplate(5)" id="ctaRepo">归档规范 / Repository</button>
+      </div>
 
-        <div class="value-grid">
-          <div class="value-card">
-            <h3 id="val1Title">可复现 / Reproducible</h3>
-            <p id="val1Desc">标准化的 SOP 流程与方法工具箱，确保不同研究员在面对相似问题时能产出一致的高质量结果。</p>
-          </div>
-          <div class="value-card">
-            <h3 id="val2Title">可行动 / Actionable</h3>
-            <p id="val2Desc">研究结论直接挂钩 Backlog 与 Design System，确保每一个洞察都能转化为具体的产品改进项。</p>
-          </div>
-          <div class="value-card">
-            <h3 id="val3Title">可验证 / Verifiable</h3>
-            <p id="val3Desc">建立核心体验指标（Suggested Metrics），通过持续的可用性测试验证设计方案的有效性。</p>
-          </div>
+      <div class="value-grid">
+        <div class="value-card">
+          <h3 id="val1Title">可复现 / Reproducible</h3>
+          <p id="val1Desc">标准化的 SOP 流程与方法工具箱，确保不同研究员在面对相似问题时能产出一致的高质量结果。</p>
+        </div>
+        <div class="value-card">
+          <h3 id="val2Title">可行动 / Actionable</h3>
+          <p id="val2Desc">研究结论直接挂钩 Backlog 与 Design System，确保每一个洞察都能转化为具体的产品改进项。</p>
+        </div>
+        <div class="value-card">
+          <h3 id="val3Title">可验证 / Verifiable</h3>
+          <p id="val3Desc">建立核心体验指标（Suggested Metrics），通过持续的可用性测试验证设计方案的有效性。</p>
         </div>
       </div>
     </section>
 
-    <!-- Research Status Section -->
-    <section class="section" id="status">
-      <div class="container">
-        <div class="section-header">
-          <h2 id="statusTitle">研究动态 / Research Status</h2>
-          <p id="statusDesc">当前正在进行的重点研究项目及最新归档案例。</p>
-        </div>
-        <div class="grid" id="statusGrid"></div>
+    <!-- Research Status -->
+    <section class="section">
+      <div class="section-header">
+        <h2 id="statusTitle">研究动态 / Research Status</h2>
+        <p id="statusDesc">当前正在进行的重点研究项目及最新归档案例。</p>
       </div>
+      <div class="grid" id="statusGrid"></div>
     </section>
 
-    <!-- SOP Section -->
+    <!-- SOP -->
     <section class="section" id="sop">
-      <div class="container">
-        <div class="section-header">
-          <h2 id="sopTitle">标准研究流程 / Standard Research Flow (SOP)</h2>
-          <p id="sopDesc">从需求对齐到 DS 更新的 7 步标准化作业程序。</p>
+      <div class="section-header">
+        <h2 id="sopTitle">标准研究流程 / Standard Research Flow (SOP)</h2>
+        <p id="sopDesc">从需求对齐到 DS 更新的 7 步标准化作业程序。</p>
+      </div>
+      <div class="sop-grid" id="sopGrid"></div>
+      <div class="sop-detail" id="sopDetail">
+        <div class="sop-detail-grid">
+          <div>
+            <h4 id="whatTitle">本步要做什么</h4>
+            <ul id="sopWhatList"></ul>
+          </div>
+          <div>
+            <h4 id="outputTitle">本步产出</h4>
+            <ul id="sopOutputList"></ul>
+          </div>
         </div>
-        <div class="sop-grid" id="sopSteps"></div>
-        <div class="sop-detail" id="sopDetail"></div>
       </div>
     </section>
 
-    <!-- Methods Section -->
+    <!-- Methods -->
     <section class="section" id="methods">
-      <div class="container">
-        <div class="section-header">
-          <h2 id="methodsTitle">方法工具箱 / Method Toolkit</h2>
-          <p id="methodsDesc">根据研究问题选择最合适的方法。</p>
-        </div>
+      <div class="section-header">
+        <h2 id="methodsTitle">方法工具箱 / Method Toolkit</h2>
+        <p id="methodsDesc">根据研究问题选择最合适的方法。</p>
       </div>
       <div class="filter-container">
         <div class="filter-bar" id="methodFilters"></div>
       </div>
-      <div class="container">
-        <div class="grid" id="methodGrid"></div>
-      </div>
+      <div class="grid" id="methodGrid"></div>
     </section>
 
-    <!-- Templates Section -->
+    <!-- Templates -->
     <section class="section" id="templates">
-      <div class="container">
-        <div class="section-header">
-          <h2 id="templatesTitle">实战模板 / Practical Templates</h2>
-          <p id="templatesDesc">直接复用的计划、脚本与归档模板。</p>
-        </div>
+      <div class="section-header">
+        <h2 id="templatesTitle">实战模板 / Practical Templates</h2>
+        <p id="templatesDesc">直接复用的计划、脚本与归档模板。</p>
       </div>
       <div class="filter-container">
-        <div class="filter-bar" id="templateFilters"></div>
+        <div class="filter-bar" id="tplFilters"></div>
       </div>
-      <div class="container">
-        <div class="grid" id="templateGrid"></div>
-      </div>
+      <div class="grid" id="tplGrid"></div>
     </section>
 
-    <!-- Governance Section -->
+    <!-- Governance -->
     <section class="section" id="governance">
-      <div class="container">
-        <div class="section-header">
-          <h2 id="govTitle">研究治理 / Research Governance</h2>
-          <p id="govDesc">确保研究资产的长期价值与跨团队协作效率。</p>
+      <div class="section-header">
+        <h2 id="govTitle">研究治理 / Research Governance</h2>
+        <p id="govDesc">确保研究资产的长期价值与跨团队协作效率。</p>
+      </div>
+      
+      <div class="gov-flow">
+        <div class="gov-box">
+          <h4 id="govFlow1">Evidence</h4>
+          <p id="govFlow1Desc">访谈/UT/日志/问卷，形成可追溯证据链。</p>
         </div>
-        
-        <div class="gov-flow">
-          <div class="gov-box">
-            <h4>Research</h4>
-            <p>发现问题与机会点</p>
-          </div>
-          <div class="gov-box">
-            <h4>Backlog</h4>
-            <p>转化为开发需求</p>
-          </div>
-          <div class="gov-box">
-            <h4>Design System</h4>
-            <p>沉淀通用设计模式</p>
-          </div>
-          <div class="gov-box">
-            <h4>Product</h4>
-            <p>上线并验证效果</p>
-          </div>
+        <div class="gov-box">
+          <h4 id="govFlow2">Insights</h4>
+          <p id="govFlow2Desc">洞察卡片：证据 → 含义 → 机会点。</p>
         </div>
+        <div class="gov-box">
+          <h4 id="govFlow3">Actions</h4>
+          <p id="govFlow3Desc">进入 Backlog：按 Impact×Effort 排序。</p>
+        </div>
+        <div class="gov-box">
+          <h4 id="govFlow4">System</h4>
+          <p id="govFlow4Desc">更新 Design System：组件/模式/文案。</p>
+        </div>
+      </div>
 
-        <div class="gov-grid">
-          <div class="gov-card">
-            <h3 id="gov1Title">高风险任务清单 / High-risk Tasks</h3>
-            <ul class="gov-list" id="riskList"></ul>
+      <div class="gov-grid">
+        <div class="gov-card">
+          <h3 id="gov1Title">高风险任务清单 / High-risk Tasks</h3>
+          <ul class="gov-list" id="riskList"></ul>
+        </div>
+        <div class="gov-card">
+          <h3 id="gov2Title">决策就绪标准 / Decision-ready Criteria</h3>
+          <ul class="gov-list" id="decisionList"></ul>
+        </div>
+      </div>
+
+      <!-- Repository & Naming -->
+      <div class="repo-section">
+        <div class="section-header">
+          <h2 id="repoTitle">归档与命名规范 / Repository & Naming</h2>
+          <p id="repoDesc">研究资产必须可追溯：统一命名、统一归档内容、统一链接到结论与行动项。</p>
+        </div>
+        <div class="repo-grid">
+          <div>
+            <h4 style="margin-bottom:16px;">命名格式 / Naming Convention</h4>
+            <div class="repo-code">
+              <code id="namingCode">YYYYMMDD_Surface_Topic_Method_vX</code>
+              <button onclick="copyText('YYYYMMDD_Surface_Topic_Method_vX')">Copy</button>
+            </div>
+            <p style="font-size:13px; color:var(--text-secondary); margin-top:12px;">示例：20260114_DesktopOS_Onboarding_UT_v1</p>
           </div>
-          <div class="gov-card">
-            <h3 id="gov2Title">决策就绪标准 / Decision-ready Criteria</h3>
-            <ul class="gov-list" id="decisionList"></ul>
+          <div>
+            <h4 style="margin-bottom:16px;">必选归档项 / Required Artifacts</h4>
+            <ul class="gov-list" id="requiredList">
+              <li>研究计划 (Research Plan)</li>
+              <li>访谈大纲/测试脚本 (Script)</li>
+              <li>原始记录/录音录像 (Raw Evidence)</li>
+              <li>洞察卡片 (Insight Cards)</li>
+              <li>行动项清单 (Action Items)</li>
+              <li>DS 更新建议 (DS Updates)</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -561,14 +643,17 @@
         { id: 5, tag: 'Archive', title: '研究归档清单', titleEn: 'Archive Checklist', desc: '确保研究资产可追溯的完整清单。', descEn: 'Complete checklist for traceable research assets.', content: '【归档清单】\n1. 研究计划 (PDF)\n2. 访谈大纲/脚本 (Doc)\n3. 原始录音/录像 (Link)\n4. 洞察卡片 (Board)\n5. 最终报告 (PPT/PDF)', contentEn: '[Archive Checklist]\n1. Plan (PDF)\n2. Script (Doc)\n3. Recordings (Link)\n4. Insight Cards (Board)\n5. Final Report (PPT/PDF)' }
       ],
       risks: [
-        { title: '数据迁移失败', titleEn: 'Data Migration Failure', desc: '从旧 NAS 或硬盘搬家时的报错处理。', descEn: 'Error handling during migration from old NAS/HDD.' },
-        { title: '外网访问受阻', titleEn: 'Remote Access Blocked', desc: '内网穿透失败导致无法远程查看文件。', descEn: 'Remote access failure due to DDNS/Relay issues.' },
-        { title: '共享链接泄露', titleEn: 'Shared Link Leakage', desc: '敏感文件通过公开链接被非授权访问。', descEn: 'Unauthorized access to sensitive files via public links.' }
+        { title: '删除/格式化（不可逆）', titleEn: 'Delete/format (irreversible)', desc: '高风险操作必须经过二次验证与明确后果告知。', descEn: 'High-risk actions must have double verification and clear impact info.' },
+        { title: '存储池/RAID 改动', titleEn: 'Storage pool/RAID changes', desc: '涉及底层数据结构的变动需提供进度预估。', descEn: 'Changes to data structures need progress estimation.' },
+        { title: '权限与共享设置', titleEn: 'Permissions & sharing', desc: '确保隐私边界清晰，避免非授权访问。', descEn: 'Ensure clear privacy boundaries to avoid unauthorized access.' },
+        { title: '远程访问与安全开关', titleEn: 'Remote access/security toggles', desc: '明确开启后的风险与便捷性权衡。', descEn: 'Clarify trade-offs between risk and convenience.' },
+        { title: '恢复/回滚与一致性', titleEn: 'Recovery/rollback & consistency', desc: '验证数据恢复流程的可靠性与用户心智。', descEn: 'Verify reliability and user mental model of recovery.' }
       ],
       decisions: [
-        { title: 'Clear output = Decision-ready', desc: '研究结论必须能直接回答“做还是不做”。', descEn: 'Conclusions must directly answer "Go or No-go".' },
-        { title: 'Trust & Risk', desc: '衡量用户对私有云存储的安全信任感。', descEn: 'Measure user trust in private cloud storage security.' },
-        { title: 'Actionable Insights', desc: '每一个洞察必须对应一个 Backlog 任务。', descEn: 'Every insight must map to a Backlog task.' }
+        { title: 'Clear output = Decision-ready', desc: '结论必须附证据（原话/截图/时间戳），直接回答“做还是不做”。', descEn: 'Evidence-linked (quotes/screenshots); directly answer "Go or No-go".' },
+        { title: 'Trust & Risk', desc: '衡量用户对私有云存储的安全信任感与可控感。', descEn: 'Measure user trust and perceived control in private cloud storage.' },
+        { title: 'Actionable Insights', desc: '每一个洞察必须对应一个 Backlog 任务与验收标准。', descEn: 'Every insight must map to a Backlog task and acceptance criteria.' },
+        { title: 'Suggested Metrics', desc: '包含完成率、时长、错误率及犹豫点次数。', descEn: 'Includes success rate, time-on-task, error rate, and hesitations.' }
       ]
     };
 
@@ -639,6 +724,9 @@
 
     let currentLang = 'zh';
     let currentTheme = 'light';
+    let currentMethodCat = '全部';
+    let currentTplCat = '全部';
+    let activeStep = 1;
 
     function toggleLang() {
       currentLang = currentLang === 'zh' ? 'en' : 'zh';
@@ -653,197 +741,227 @@
 
     function updateUI() {
       const lang = I18N[currentLang];
-      for (let id in lang) {
-        const el = document.getElementById(id);
-        if (el) {
-          if (el.tagName === 'INPUT') el.placeholder = lang[id];
-          else el.textContent = lang[id];
-        }
-      }
-      renderAll();
-    }
+      document.getElementById('heroTitle').textContent = lang.heroTitle;
+      document.getElementById('heroDesc').textContent = lang.heroDesc;
+      document.getElementById('val1Title').textContent = lang.val1Title;
+      document.getElementById('val1Desc').textContent = lang.val1Desc;
+      document.getElementById('val2Title').textContent = lang.val2Title;
+      document.getElementById('val2Desc').textContent = lang.val2Desc;
+      document.getElementById('val3Title').textContent = lang.val3Title;
+      document.getElementById('val3Desc').textContent = lang.val3Desc;
+      document.getElementById('statusTitle').textContent = lang.statusTitle;
+      document.getElementById('statusDesc').textContent = lang.statusDesc;
+      document.getElementById('sopTitle').textContent = lang.sopTitle;
+      document.getElementById('sopDesc').textContent = lang.sopDesc;
+      document.getElementById('methodsTitle').textContent = lang.methodsTitle;
+      document.getElementById('methodsDesc').textContent = lang.methodsDesc;
+      document.getElementById('templatesTitle').textContent = lang.templatesTitle;
+      document.getElementById('templatesDesc').textContent = lang.templatesDesc;
+      document.getElementById('govTitle').textContent = lang.govTitle;
+      document.getElementById('govDesc').textContent = lang.govDesc;
+      document.getElementById('gov1Title').textContent = lang.gov1Title;
+      document.getElementById('gov2Title').textContent = lang.gov2Title;
+      document.getElementById('searchInput').placeholder = lang.searchPlaceholder;
+      document.getElementById('whatTitle').textContent = lang.whatTitle;
+      document.getElementById('outputTitle').textContent = lang.outputTitle;
 
-    function renderAll() {
       renderStatus();
       renderSOP();
+      renderMethodFilters();
       renderMethods();
+      renderTplFilters();
       renderTemplates();
       renderGovernance();
     }
 
     function renderStatus() {
       const grid = document.getElementById('statusGrid');
-      const query = document.getElementById('searchInput').value.toLowerCase();
-      grid.innerHTML = DATA.status
-        .filter(s => s.title.toLowerCase().includes(query) || s.titleEn.toLowerCase().includes(query))
-        .map(s => `
-          <div class="card">
-            <div class="card-tag">${s.tag}</div>
-            <h3>${currentLang === 'zh' ? s.title : s.titleEn}</h3>
-            <p>${currentLang === 'zh' ? s.desc : s.descEn}</p>
-            <div class="card-footer">
-              <span class="card-tag" style="color: ${s.status === 'Done' ? '#10b981' : '#f59e0b'}">${s.status}</span>
-              <button class="card-btn" onclick="showStatusDetail(${s.id})">${I18N[currentLang].btnDetail}</button>
-            </div>
+      grid.innerHTML = DATA.status.map(s => `
+        <div class="card">
+          <div class="card-tag">${s.tag}</div>
+          <h3>${currentLang === 'zh' ? s.title : s.titleEn}</h3>
+          <p>${currentLang === 'zh' ? s.desc : s.descEn}</p>
+          <div class="card-footer">
+            <span style="font-size:12px; color:var(--text-secondary)">${s.status}</span>
+            <button class="card-btn" onclick="openStatusDetail(${s.id})">${I18N[currentLang].btnDetail}</button>
           </div>
-        `).join('');
+        </div>
+      `).join('');
     }
 
     function renderSOP() {
-      const steps = document.getElementById('sopSteps');
-      steps.innerHTML = DATA.steps.map((s, i) => `
-        <div class="sop-step ${i === 0 ? 'active' : ''}" onclick="activateSOP(${i})">
+      const grid = document.getElementById('sopGrid');
+      grid.innerHTML = DATA.steps.map(s => `
+        <div class="sop-step ${activeStep === s.id ? 'active' : ''}" onclick="selectStep(${s.id})">
           <span>Step ${s.id}</span>
           <strong>${currentLang === 'zh' ? s.title : s.titleEn}</strong>
         </div>
       `).join('');
-      activateSOP(0);
+      
+      const step = DATA.steps.find(s => s.id === activeStep);
+      document.getElementById('sopDetail').classList.add('active');
+      document.getElementById('sopWhatList').innerHTML = `<li>${currentLang === 'zh' ? step.what : step.whatEn}</li>`;
+      document.getElementById('sopOutputList').innerHTML = `<li>${currentLang === 'zh' ? step.output : step.outputEn}</li>`;
     }
 
-    function activateSOP(index) {
-      document.querySelectorAll('.sop-step').forEach((el, i) => el.classList.toggle('active', i === index));
-      const s = DATA.steps[index];
-      const detail = document.getElementById('sopDetail');
-      detail.classList.add('active');
-      detail.innerHTML = `
-        <div class="sop-detail-grid">
-          <div>
-            <h4>${I18N[currentLang].whatTitle}</h4>
-            <p style="font-size: 18px; font-weight: 500;">${currentLang === 'zh' ? s.what : s.whatEn}</p>
-          </div>
-          <div>
-            <h4>${I18N[currentLang].outputTitle}</h4>
-            <div class="card-tag" style="font-size: 16px; background: var(--accent-glow); padding: 8px 16px; border-radius: 8px; display: inline-block;">
-              ${currentLang === 'zh' ? s.output : s.outputEn}
-            </div>
-          </div>
-        </div>
-      `;
+    function selectStep(id) {
+      activeStep = id;
+      renderSOP();
+    }
+
+    function renderMethodFilters() {
+      const cats = ['全部', '定性', '定量', '信息架构', '长期行为', '数据分析'];
+      const bar = document.getElementById('methodFilters');
+      bar.innerHTML = cats.map(c => `
+        <div class="filter-chip ${currentMethodCat === c ? 'active' : ''}" onclick="filterMethods('${c}')">${c}</div>
+      `).join('');
+    }
+
+    function filterMethods(cat) {
+      currentMethodCat = cat;
+      renderMethodFilters();
+      renderMethods();
     }
 
     function renderMethods() {
-      const filters = document.getElementById('methodFilters');
-      const categories = ['全部', '定性', '定量', '信息架构', '长期行为', '数据分析'];
-      filters.innerHTML = categories.map(c => `
-        <div class="filter-chip ${c === '全部' ? 'active' : ''}" onclick="filterMethods('${c}', this)">${c}</div>
+      const grid = document.getElementById('methodGrid');
+      const filtered = DATA.methods.filter(m => currentMethodCat === '全部' || m.category === currentMethodCat);
+      grid.innerHTML = filtered.map(m => `
+        <div class="card">
+          <div class="card-tag">${m.tag}</div>
+          <h3>${currentLang === 'zh' ? m.title : m.titleEn}</h3>
+          <p>${currentLang === 'zh' ? m.desc : m.descEn}</p>
+          <div class="card-footer">
+            <button class="card-btn" onclick="openMethodDetail(${m.id})">${I18N[currentLang].btnDetail}</button>
+          </div>
+        </div>
       `).join('');
-      filterMethods('全部');
     }
 
-    function filterMethods(cat, el) {
-      if (el) {
-        el.parentElement.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
-      }
-      const grid = document.getElementById('methodGrid');
-      grid.innerHTML = DATA.methods
-        .filter(m => cat === '全部' || m.category === cat)
-        .map(m => `
-          <div class="card">
-            <div class="card-tag">${m.tag}</div>
-            <h3>${currentLang === 'zh' ? m.title : m.titleEn}</h3>
-            <p>${currentLang === 'zh' ? m.desc : m.descEn}</p>
-            <button class="card-btn" onclick="showMethodDetail(${m.id})">${I18N[currentLang].btnDetail}</button>
-          </div>
-        `).join('');
+    function renderTplFilters() {
+      const cats = ['全部', 'Plan', 'Script', 'Screener', 'Insight', 'Archive'];
+      const bar = document.getElementById('tplFilters');
+      bar.innerHTML = cats.map(c => `
+        <div class="filter-chip ${currentTplCat === c ? 'active' : ''}" onclick="filterTpls('${c}')">${c}</div>
+      `).join('');
+    }
+
+    function filterTpls(cat) {
+      currentTplCat = cat;
+      renderTplFilters();
+      renderTemplates();
     }
 
     function renderTemplates() {
-      const filters = document.getElementById('templateFilters');
-      const tags = ['全部', 'Plan', 'Script', 'Screener', 'Insight', 'Archive'];
-      filters.innerHTML = tags.map(t => `
-        <div class="filter-chip ${t === '全部' ? 'active' : ''}" onclick="filterTemplates('${t}', this)">${t}</div>
-      `).join('');
-      filterTemplates('全部');
-    }
-
-    function filterTemplates(tag, el) {
-      if (el) {
-        el.parentElement.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
-      }
-      const grid = document.getElementById('templateGrid');
-      grid.innerHTML = DATA.templates
-        .filter(t => tag === '全部' || t.tag === tag)
-        .map(t => `
-          <div class="card">
-            <div class="card-tag">${t.tag}</div>
-            <h3>${currentLang === 'zh' ? t.title : t.titleEn}</h3>
-            <p>${currentLang === 'zh' ? t.desc : t.descEn}</p>
-            <button class="card-btn" onclick="showTemplatePreview(${t.id})">${I18N[currentLang].btnPreview}</button>
+      const grid = document.getElementById('tplGrid');
+      const filtered = DATA.templates.filter(t => currentTplCat === '全部' || t.tag === currentTplCat);
+      grid.innerHTML = filtered.map(t => `
+        <div class="card">
+          <div class="card-tag">${t.tag}</div>
+          <h3>${currentLang === 'zh' ? t.title : t.titleEn}</h3>
+          <p>${currentLang === 'zh' ? t.desc : t.descEn}</p>
+          <div class="card-footer">
+            <button class="card-btn" onclick="openTemplate(${t.id})">${I18N[currentLang].btnPreview}</button>
+            <button class="card-btn" onclick="copyText(DATA.templates.find(x=>x.id===${t.id})[currentLang==='zh'?'content':'contentEn'])">${I18N[currentLang].btnCopy}</button>
           </div>
-        `).join('');
+        </div>
+      `).join('');
     }
 
     function renderGovernance() {
       document.getElementById('riskList').innerHTML = DATA.risks.map(r => `
-        <li><strong>${currentLang === 'zh' ? r.title : r.titleEn}</strong>: ${currentLang === 'zh' ? r.desc : r.descEn}</li>
+        <li>
+          <div>
+            <strong>${currentLang === 'zh' ? r.title : r.titleEn}</strong>
+            <div style="font-size:12px; color:var(--text-secondary)">${currentLang === 'zh' ? r.desc : r.descEn}</div>
+          </div>
+        </li>
       `).join('');
       document.getElementById('decisionList').innerHTML = DATA.decisions.map(d => `
-        <li><strong>${currentLang === 'zh' ? d.title : d.titleEn}</strong>: ${currentLang === 'zh' ? d.desc : d.descEn}</li>
+        <li>
+          <div>
+            <strong>${currentLang === 'zh' ? d.title : d.titleEn}</strong>
+            <div style="font-size:12px; color:var(--text-secondary)">${currentLang === 'zh' ? d.desc : d.descEn}</div>
+          </div>
+        </li>
       `).join('');
     }
 
-    function showStatusDetail(id) {
+    function openStatusDetail(id) {
       const s = DATA.status.find(x => x.id === id);
-      showModal(currentLang === 'zh' ? s.title : s.titleEn, `
-        <div style="display: grid; gap: 24px;">
-          <div><h4 style="color: var(--accent); margin-bottom: 8px;">摘要 / Summary</h4><p>${currentLang === 'zh' ? s.summary : s.summaryEn}</p></div>
-          <div><h4 style="color: var(--accent); margin-bottom: 8px;">核心洞察 / Insights</h4><p>${currentLang === 'zh' ? s.insights : s.insightsEn}</p></div>
-          <div><h4 style="color: var(--accent); margin-bottom: 8px;">行动项 / Actions</h4><p>${currentLang === 'zh' ? s.actions : s.actionsEn}</p></div>
+      const content = `
+        <div class="modal-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+          <div>
+            <h4 style="margin-bottom:8px;">${currentLang === 'zh' ? '摘要' : 'Summary'}</h4>
+            <p style="font-size:14px; margin-bottom:16px;">${currentLang === 'zh' ? s.summary : s.summaryEn}</p>
+            <h4 style="margin-bottom:8px;">${currentLang === 'zh' ? '洞察' : 'Insights'}</h4>
+            <p style="font-size:14px;">${currentLang === 'zh' ? s.insights : s.insightsEn}</p>
+          </div>
+          <div>
+            <h4 style="margin-bottom:8px;">${currentLang === 'zh' ? '行动项' : 'Actions'}</h4>
+            <p style="font-size:14px; margin-bottom:16px;">${currentLang === 'zh' ? s.actions : s.actionsEn}</p>
+            <h4 style="margin-bottom:8px;">${currentLang === 'zh' ? '状态' : 'Status'}</h4>
+            <span class="card-tag">${s.status}</span>
+          </div>
         </div>
-      `);
+      `;
+      openModal(currentLang === 'zh' ? s.title : s.titleEn, s.tag, content);
     }
 
-    function showMethodDetail(id) {
+    function openMethodDetail(id) {
       const m = DATA.methods.find(x => x.id === id);
-      showModal(currentLang === 'zh' ? m.title : m.titleEn, `
-        <div style="display: grid; gap: 24px;">
-          <div><h4 style="color: var(--accent); margin-bottom: 8px;">适用场景</h4><p>${currentLang === 'zh' ? m.desc : m.descEn}</p></div>
-          <div><h4 style="color: var(--accent); margin-bottom: 8px;">产出物</h4><p>标准化研究报告、洞察卡片</p></div>
+      const content = `
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+          <div>
+            <h4 style="margin-bottom:8px;">${currentLang === 'zh' ? '适用场景' : 'Use Case'}</h4>
+            <p style="font-size:14px;">${currentLang === 'zh' ? m.desc : m.descEn}</p>
+          </div>
+          <div>
+            <h4 style="margin-bottom:8px;">${currentLang === 'zh' ? '建议产出' : 'Suggested Outputs'}</h4>
+            <ul style="font-size:14px; padding-left:16px;">
+              <li>${currentLang === 'zh' ? '研究报告' : 'Research Report'}</li>
+              <li>${currentLang === 'zh' ? '洞察卡片' : 'Insight Cards'}</li>
+            </ul>
+          </div>
         </div>
-      `);
+      `;
+      openModal(currentLang === 'zh' ? m.title : m.titleEn, m.tag, content);
     }
 
-    function showTemplatePreview(id) {
+    function openTemplate(id) {
       const t = DATA.templates.find(x => x.id === id);
-      showModal(currentLang === 'zh' ? t.title : t.titleEn, `
-        <pre style="background: var(--pre-bg); padding: 20px; border-radius: 12px; white-space: pre-wrap; font-family: monospace; border: 1px solid var(--card-border); color: var(--text-primary);">
-${currentLang === 'zh' ? t.content : t.contentEn}
-        </pre>
-        <button class="btn-primary" style="margin-top: 20px; width: 100%;" onclick="copyText(\`${currentLang === 'zh' ? t.content : t.contentEn}\`)">${I18N[currentLang].btnCopy}</button>
-      `);
+      const content = `<pre>${currentLang === 'zh' ? t.content : t.contentEn}</pre>`;
+      openModal(currentLang === 'zh' ? t.title : t.titleEn, t.tag, content);
     }
 
-    function showTemplate(tag) {
-      const t = DATA.templates.find(x => x.tag.toLowerCase() === tag.toLowerCase()) || DATA.templates[0];
-      showTemplatePreview(t.id);
-    }
-
-    function showModal(title, body) {
+    function openModal(title, tag, content) {
       document.getElementById('modalTitle').textContent = title;
-      document.getElementById('modalBody').innerHTML = body;
-      document.getElementById('modalOverlay').classList.add('active');
+      document.getElementById('modalBody').innerHTML = content;
+      document.getElementById('modalOverlay').classList.add('show');
     }
 
     function closeModal() {
-      document.getElementById('modalOverlay').classList.remove('active');
+      document.getElementById('modalOverlay').classList.remove('show');
     }
 
     function copyText(text) {
       navigator.clipboard.writeText(text).then(() => {
         const toast = document.getElementById('toast');
         toast.textContent = I18N[currentLang].toastCopy;
-        toast.classList.add('active');
-        setTimeout(() => toast.classList.remove('active'), 2000);
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 2000);
       });
     }
 
-    document.getElementById('langToggle').onclick = toggleLang;
-    document.getElementById('themeToggle').onclick = toggleTheme;
-    document.getElementById('searchInput').oninput = renderStatus;
+    function handleSearch() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      // Simple search logic for demo
+      renderStatus();
+      renderMethods();
+      renderTemplates();
+    }
 
-    // Init
+    // Initial Render
     updateUI();
   </script>
 </body>
