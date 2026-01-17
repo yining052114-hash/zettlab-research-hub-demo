@@ -13,10 +13,11 @@
       --text-primary: #111111;
       --text-secondary: rgba(0, 0, 0, 0.6);
       --accent: #7c3aed;
-      --accent-glow: rgba(124, 58, 237, 0.1);
+      --accent-glow: rgba(124, 58, 237, 0.08);
       --topbar-bg: rgba(255, 255, 255, 0.8);
       --modal-bg: #ffffff;
       --filter-bg: rgba(255, 255, 255, 0.8);
+      --pre-bg: #f8f9fa;
       
       --radius-xl: 32px;
       --radius-lg: 24px;
@@ -31,11 +32,12 @@
       --card-border: rgba(255, 255, 255, 0.08);
       --text-primary: #ffffff;
       --text-secondary: rgba(255, 255, 255, 0.6);
-      --accent: #7c3aed;
-      --accent-glow: rgba(124, 58, 237, 0.3);
+      --accent: #a78bfa;
+      --accent-glow: rgba(167, 139, 250, 0.15);
       --topbar-bg: rgba(5, 5, 5, 0.8);
       --modal-bg: #111111;
       --filter-bg: rgba(5, 5, 5, 0.8);
+      --pre-bg: #1a1a1a;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -48,7 +50,6 @@
       transition: background-color 0.3s, color 0.3s;
     }
 
-    /* Background Glows */
     .glow {
       position: fixed;
       width: 100vw;
@@ -225,7 +226,7 @@
       flex-direction: column;
       gap: 16px;
     }
-    .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
     [data-theme="dark"] .card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
     .card-tag { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
     .card h3 { font-size: 18px; font-weight: 600; }
@@ -549,7 +550,7 @@
         { id: 4, tag: 'Quantitative', title: '问卷调查', titleEn: 'Survey', desc: '快速验证偏好，获取规模化数据支持。', descEn: 'Quickly verify preferences and get large-scale data support.', category: '定量' },
         { id: 5, tag: 'IA', title: '卡片分类', titleEn: 'Card Sorting', desc: '验证导航与命名是否符合用户分类方式。', descEn: 'Verify if navigation and naming match user mental models.', category: '信息架构' },
         { id: 6, tag: 'IA', title: '树状测试', titleEn: 'Tree Testing', desc: '验证路径直觉性，不依赖视觉设计。', descEn: 'Verify path intuition without relying on visual design.', category: '信息架构' },
-        { id: 7, tag: 'Behavior', title: '日记研究', titleEn: 'Diary Study', desc: '记录用户在长周期内的真实使用习惯。', descEn: 'Record real usage habits over a long period.', category: '长期行为' },
+        { id: 7, tag: 'Behavior', title: '日记研究', titleEn: 'Diary Study', desc: '观察长期使用习惯与告警发生后的真实反应。', descEn: 'Observe long-term habits and real reactions to alerts.', category: '长期行为' },
         { id: 8, tag: 'Behavior', title: '行为日志分析', titleEn: 'Log Analysis', desc: '通过埋点数据还原用户真实转化路径。', descEn: 'Restore real conversion paths via tracking data.', category: '数据分析' }
       ],
       templates: [
@@ -807,7 +808,7 @@
     function showTemplatePreview(id) {
       const t = DATA.templates.find(x => x.id === id);
       showModal(currentLang === 'zh' ? t.title : t.titleEn, `
-        <pre style="background: var(--card-bg); padding: 20px; border-radius: 12px; white-space: pre-wrap; font-family: monospace; border: 1px solid var(--card-border); color: var(--text-primary);">
+        <pre style="background: var(--pre-bg); padding: 20px; border-radius: 12px; white-space: pre-wrap; font-family: monospace; border: 1px solid var(--card-border); color: var(--text-primary);">
 ${currentLang === 'zh' ? t.content : t.contentEn}
         </pre>
         <button class="btn-primary" style="margin-top: 20px; width: 100%;" onclick="copyText(\`${currentLang === 'zh' ? t.content : t.contentEn}\`)">${I18N[currentLang].btnCopy}</button>
