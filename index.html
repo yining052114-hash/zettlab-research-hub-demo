@@ -6,6 +6,26 @@
   <title>Zettlab Research Hub · 用研规范 Demo</title>
   <style>
     :root {
+      /* Light Mode (Default) */
+      --bg: #ffffff;
+      --card-bg: rgba(0, 0, 0, 0.03);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --text-primary: #111111;
+      --text-secondary: rgba(0, 0, 0, 0.6);
+      --accent: #7c3aed;
+      --accent-glow: rgba(124, 58, 237, 0.1);
+      --topbar-bg: rgba(255, 255, 255, 0.8);
+      --modal-bg: #ffffff;
+      --filter-bg: rgba(255, 255, 255, 0.8);
+      
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    [data-theme="dark"] {
       --bg: #050505;
       --card-bg: rgba(255, 255, 255, 0.03);
       --card-border: rgba(255, 255, 255, 0.08);
@@ -13,11 +33,9 @@
       --text-secondary: rgba(255, 255, 255, 0.6);
       --accent: #7c3aed;
       --accent-glow: rgba(124, 58, 237, 0.3);
-      --radius-xl: 32px;
-      --radius-lg: 24px;
-      --radius-md: 16px;
-      --radius-sm: 12px;
-      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --topbar-bg: rgba(5, 5, 5, 0.8);
+      --modal-bg: #111111;
+      --filter-bg: rgba(5, 5, 5, 0.8);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,9 +45,21 @@
       color: var(--text-primary);
       line-height: 1.6;
       overflow-x: hidden;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Background Glows */
+    .glow {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      pointer-events: none;
       background-image: 
-        radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
+        radial-gradient(circle at 20% 20%, var(--accent-glow) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
     }
 
     .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
@@ -39,7 +69,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(5, 5, 5, 0.8);
+      background: var(--topbar-bg);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--card-border);
     }
@@ -49,7 +79,7 @@
       align-items: center;
       justify-content: space-between;
     }
-    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: white; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); }
     .brand-logo { width: 32px; height: 32px; background: linear-gradient(135deg, #7c3aed, #3b82f6); border-radius: 10px; }
     .brand-text strong { font-size: 18px; font-weight: 700; display: block; }
     .brand-text span { font-size: 12px; color: var(--text-secondary); }
@@ -63,7 +93,7 @@
       font-size: 14px;
       transition: all 0.2s;
     }
-    .nav a:hover, .nav a.active { color: white; background: var(--card-bg); }
+    .nav a:hover, .nav a.active { color: var(--text-primary); background: var(--card-bg); }
 
     .top-tools { display: flex; align-items: center; gap: 12px; }
     .search-box {
@@ -78,21 +108,23 @@
     .search-box input {
       background: transparent;
       border: none;
-      color: white;
+      color: var(--text-primary);
       outline: none;
       font-size: 14px;
       width: 180px;
     }
-    .btn-lang {
+    .btn-tool {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      color: white;
+      color: var(--text-primary);
       padding: 6px 12px;
       border-radius: 99px;
       cursor: pointer;
       font-size: 12px;
       font-weight: 600;
+      transition: all 0.2s;
     }
+    .btn-tool:hover { background: var(--card-border); }
 
     /* Hero */
     .hero { padding: 80px 0 60px; text-align: center; }
@@ -100,8 +132,8 @@
     .hero p { font-size: 18px; color: var(--text-secondary); max-width: 800px; margin: 0 auto 32px; }
     .hero-actions { display: flex; justify-content: center; gap: 16px; }
     .btn-primary {
-      background: white;
-      color: black;
+      background: var(--text-primary);
+      color: var(--bg);
       padding: 12px 24px;
       border-radius: 99px;
       font-weight: 600;
@@ -114,7 +146,7 @@
     .btn-secondary {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      color: white;
+      color: var(--text-primary);
       padding: 12px 24px;
       border-radius: 99px;
       font-weight: 600;
@@ -122,7 +154,7 @@
       transition: all 0.2s;
       cursor: pointer;
     }
-    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+    .btn-secondary:hover { background: var(--card-border); }
 
     /* Value Cards */
     .value-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
@@ -149,7 +181,7 @@
       position: sticky;
       top: 72px;
       z-index: 90;
-      background: rgba(5, 5, 5, 0.8);
+      background: var(--filter-bg);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--card-border);
       margin-bottom: 32px;
@@ -178,8 +210,8 @@
       transition: all 0.2s;
       white-space: nowrap;
     }
-    .filter-chip:hover { color: white; border-color: rgba(255,255,255,0.2); }
-    .filter-chip.active { background: white; color: black; border-color: white; }
+    .filter-chip:hover { color: var(--text-primary); border-color: var(--text-secondary); }
+    .filter-chip.active { background: var(--text-primary); color: var(--bg); border-color: var(--text-primary); }
 
     /* Grid Layouts */
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
@@ -193,7 +225,8 @@
       flex-direction: column;
       gap: 16px;
     }
-    .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    [data-theme="dark"] .card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
     .card-tag { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
     .card h3 { font-size: 18px; font-weight: 600; }
     .card p { font-size: 14px; color: var(--text-secondary); flex-grow: 1; }
@@ -201,14 +234,14 @@
     .card-btn {
       background: transparent;
       border: 1px solid var(--card-border);
-      color: white;
+      color: var(--text-primary);
       padding: 8px 16px;
       border-radius: 99px;
       font-size: 13px;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .card-btn:hover { background: white; color: black; }
+    .card-btn:hover { background: var(--text-primary); color: var(--bg); }
 
     /* SOP Flow */
     .sop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 24px; }
@@ -221,7 +254,7 @@
       transition: all 0.2s;
       text-align: center;
     }
-    .sop-step:hover, .sop-step.active { border-color: var(--accent); background: rgba(124, 58, 237, 0.1); }
+    .sop-step:hover, .sop-step.active { border-color: var(--accent); background: var(--accent-glow); }
     .sop-step span { display: block; font-size: 12px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
     .sop-step strong { font-size: 14px; display: block; line-height: 1.2; }
     
@@ -272,7 +305,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.4);
       backdrop-filter: blur(10px);
       z-index: 200;
       display: none;
@@ -280,9 +313,10 @@
       justify-content: center;
       padding: 24px;
     }
+    [data-theme="dark"] .modal-overlay { background: rgba(0,0,0,0.8); }
     .modal-overlay.active { display: flex; }
     .modal {
-      background: #111;
+      background: var(--modal-bg);
       border: 1px solid var(--card-border);
       width: 100%;
       max-width: 800px;
@@ -291,198 +325,187 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.1);
     }
+    [data-theme="dark"] .modal { box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
     .modal-header { padding: 24px; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; }
     .modal-body { padding: 32px; overflow-y: auto; }
-    .modal-close { background: var(--card-bg); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
-    
-    .pre-box {
-      background: #000;
-      padding: 20px;
-      border-radius: var(--radius-md);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      line-height: 1.6;
-      color: #a5b4fc;
-      white-space: pre-wrap;
-      border: 1px solid var(--card-border);
+    .modal-close { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 24px; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text-primary);
+      color: var(--bg);
+      padding: 12px 24px;
+      border-radius: 99px;
+      font-weight: 600;
+      z-index: 300;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+    .toast.active { transform: translateX(-50%) translateY(0); }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Responsive */
-    @media (max-width: 980px) {
-      .hero h1 { font-size: 40px; }
-      .value-grid, .gov-grid, .sop-detail-grid { grid-template-columns: 1fr; }
-      .gov-flow { grid-template-columns: 1fr 1fr; }
-      .nav { display: none; }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 36px; }
+      .value-grid, .gov-flow, .gov-grid, .sop-detail-grid { grid-template-columns: 1fr; }
+      .topbar-inner { height: auto; padding: 16px 0; flex-direction: column; gap: 16px; }
+      .nav { overflow-x: auto; width: 100%; padding-bottom: 8px; }
     }
   </style>
 </head>
 <body>
+  <div class="glow"></div>
 
   <header class="topbar">
-    <div class="container">
-      <div class="topbar-inner">
-        <a href="#" class="brand">
-          <div class="brand-logo"></div>
-          <div class="brand-text">
-            <strong>Zettlab Research Hub</strong>
-            <span data-i18n="brand_sub">用证据驱动 NAS 体验决策</span>
-          </div>
-        </a>
-        <nav class="nav">
-          <a href="#overview" class="active" data-i18n="nav_overview">首页</a>
-          <a href="#sop" data-i18n="nav_sop">SOP 流程</a>
-          <a href="#methods" data-i18n="nav_methods">方法库</a>
-          <a href="#templates" data-i18n="nav_templates">模板</a>
-          <a href="#repository" data-i18n="nav_repository">归档规范</a>
-          <a href="#governance" data-i18n="nav_governance">治理</a>
-        </nav>
-        <div class="top-tools">
-          <div class="search-box">
-            <input type="text" id="searchInput" placeholder="搜索 / Search...">
-          </div>
-          <button class="btn-lang" id="langBtn">EN</button>
+    <div class="container topbar-inner">
+      <a href="#" class="brand">
+        <div class="brand-logo"></div>
+        <div class="brand-text">
+          <strong>Zettlab Research Hub</strong>
+          <span>用证据驱动 NAS 体验决策</span>
         </div>
+      </a>
+      <nav class="nav">
+        <a href="#home" class="active">首页</a>
+        <a href="#sop">SOP 流程</a>
+        <a href="#methods">方法库</a>
+        <a href="#templates">模板</a>
+        <a href="#governance">治理</a>
+      </nav>
+      <div class="top-tools">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="搜索方法 / 模板 / 研究案例...">
+        </div>
+        <button class="btn-tool" id="langToggle">CN/EN</button>
+        <button class="btn-tool" id="themeToggle">Dark</button>
       </div>
     </div>
   </header>
 
-  <main class="container">
-    <!-- Hero -->
-    <section class="hero" id="overview">
-      <h1 data-i18n="hero_title">Zettlab Research Hub</h1>
-      <p data-i18n="hero_sub">统一 NAS（桌面端 OS / Web 管理端 / App）的用户研究方法、交付物与质量门槛。研究结论必须可复现、可追溯、可行动。</p>
-      <div class="hero-actions">
-        <button class="btn-primary" onclick="openTplModal('tpl_plan')" data-i18n="cta_start">发起研究 / Start Study</button>
-        <button class="btn-secondary" onclick="openTplModal('tpl_ut_desktop')" data-i18n="cta_ut">运行 UT / Run UT</button>
-        <button class="btn-secondary" onclick="openTplModal('tpl_repo')" data-i18n="cta_repo">归档清单 / Repository</button>
-      </div>
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="container">
+        <h1 id="heroTitle">用研规范与知识库</h1>
+        <p id="heroDesc">为 NAS 桌面端、Web 管理端及移动端打造的标准化研究体系，确保研究结果可复现、可行动、可验证。</p>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="showTemplate('plan')">发起研究</button>
+          <button class="btn-secondary" onclick="showTemplate('ut')">运行 UT</button>
+          <button class="btn-secondary" onclick="showTemplate('archive')">归档规范</button>
+        </div>
 
-      <div class="value-grid">
-        <div class="value-card">
-          <h3 data-i18n="v1_title">可复现 / Repeatable</h3>
-          <p data-i18n="v1_desc">统一脚本、任务与成功标准；同一问题能被不同人重复验证。</p>
-        </div>
-        <div class="value-card">
-          <h3 data-i18n="v2_title">可行动 / Actionable</h3>
-          <p data-i18n="v2_desc">洞察卡片必须映射到机会点、需求优先级与 Design System 更新项。</p>
-        </div>
-        <div class="value-card">
-          <h3 data-i18n="v3_title">可验证 / Verifiable</h3>
-          <p data-i18n="v3_desc">上线前后用指标闭环验证，尤其关注 NAS 高风险任务（删除/格式化/权限）。</p>
+        <div class="value-grid">
+          <div class="value-card">
+            <h3 id="val1Title">可复现 / Reproducible</h3>
+            <p id="val1Desc">标准化的 SOP 流程与方法工具箱，确保不同研究员在面对相似问题时能产出一致的高质量结果。</p>
+          </div>
+          <div class="value-card">
+            <h3 id="val2Title">可行动 / Actionable</h3>
+            <p id="val2Desc">研究结论直接挂钩 Backlog 与 Design System，确保每一个洞察都能转化为具体的产品改进项。</p>
+          </div>
+          <div class="value-card">
+            <h3 id="val3Title">可验证 / Verifiable</h3>
+            <p id="val3Desc">建立核心体验指标（Suggested Metrics），通过持续的可用性测试验证设计方案的有效性。</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Research Status -->
-    <section class="section">
-      <div class="section-header">
-        <h2 data-i18n="dash_title">研究动态 / Research Status</h2>
-        <p data-i18n="dash_desc">最近的研究项目与资产概览。</p>
+    <!-- Research Status Section -->
+    <section class="section" id="status">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="statusTitle">研究动态 / Research Status</h2>
+          <p id="statusDesc">当前正在进行的重点研究项目及最新归档案例。</p>
+        </div>
+        <div class="grid" id="statusGrid"></div>
       </div>
-      <div class="grid" id="studiesGrid"></div>
     </section>
 
-    <!-- SOP -->
+    <!-- SOP Section -->
     <section class="section" id="sop">
-      <div class="section-header">
-        <h2 data-i18n="sop_title">标准研究流程 / Standard Research Flow (SOP)</h2>
-        <p data-i18n="sop_desc">从目标定义到上线验证的 7 步闭环路径。</p>
+      <div class="container">
+        <div class="section-header">
+          <h2 id="sopTitle">标准研究流程 / Standard Research Flow (SOP)</h2>
+          <p id="sopDesc">从需求对齐到 DS 更新的 7 步标准化作业程序。</p>
+        </div>
+        <div class="sop-grid" id="sopSteps"></div>
+        <div class="sop-detail" id="sopDetail"></div>
       </div>
-      <div class="sop-grid" id="sopSteps"></div>
-      <div class="sop-detail" id="sopDetail"></div>
     </section>
 
-    <!-- Methods -->
+    <!-- Methods Section -->
     <section class="section" id="methods">
-      <div class="section-header">
-        <h2 data-i18n="methods_title">方法工具箱 / Method Toolkit</h2>
-        <p data-i18n="methods_desc">根据研究问题选择最合适的方法。</p>
+      <div class="container">
+        <div class="section-header">
+          <h2 id="methodsTitle">方法工具箱 / Method Toolkit</h2>
+          <p id="methodsDesc">根据研究问题选择最合适的方法。</p>
+        </div>
       </div>
       <div class="filter-container">
         <div class="filter-bar" id="methodFilters"></div>
       </div>
-      <div class="grid" id="methodGrid"></div>
+      <div class="container">
+        <div class="grid" id="methodGrid"></div>
+      </div>
     </section>
 
-    <!-- Templates -->
+    <!-- Templates Section -->
     <section class="section" id="templates">
-      <div class="section-header">
-        <h2 data-i18n="tpl_title">实战模板 / Templates</h2>
-        <p data-i18n="tpl_desc">直接复用的研究计划、脚本与归档模板。</p>
+      <div class="container">
+        <div class="section-header">
+          <h2 id="templatesTitle">实战模板 / Practical Templates</h2>
+          <p id="templatesDesc">直接复用的计划、脚本与归档模板。</p>
+        </div>
       </div>
       <div class="filter-container">
-        <div class="filter-bar" id="tplFilters"></div>
+        <div class="filter-bar" id="templateFilters"></div>
       </div>
-      <div class="grid" id="tplGrid"></div>
-    </section>
-
-    <!-- Repository -->
-    <section class="section" id="repository">
-      <div class="section-header">
-        <h2 data-i18n="repo_title">归档与命名规范 / Repository & Naming Rules</h2>
-        <p data-i18n="repo_desc">研究资产必须可追溯：统一命名、统一归档内容、统一链接到结论与行动项。</p>
-      </div>
-      <div class="gov-grid">
-        <div class="gov-card">
-          <h3 data-i18n="repo_naming_title">命名格式 / Naming Pattern</h3>
-          <div class="pre-box" id="namingPattern"></div>
-          <button class="btn-secondary" style="margin-top: 16px;" onclick="copyNaming()" data-i18n="btn_copy_naming">复制命名规则 / Copy Rule</button>
-        </div>
-        <div class="gov-card">
-          <h3 data-i18n="repo_required_title">必选归档项 / Required Artifacts</h3>
-          <ul class="gov-list" id="requiredArtifacts"></ul>
-        </div>
+      <div class="container">
+        <div class="grid" id="templateGrid"></div>
       </div>
     </section>
 
-    <!-- Governance -->
+    <!-- Governance Section -->
     <section class="section" id="governance">
-      <div class="section-header">
-        <h2 data-i18n="gov_title">治理流程 / Governance: Research → Backlog → DS</h2>
-        <p data-i18n="gov_desc">研究不是报告，而是输入系统：洞察进入机会地图；行动项进入 Backlog；模式进入 Design System。</p>
-      </div>
-      <div class="gov-flow">
-        <div class="gov-box">
-          <h4 data-i18n="gov1_title">Evidence</h4>
-          <p data-i18n="gov1_desc">访谈/UT/日志/问卷，形成可追溯证据链。</p>
+      <div class="container">
+        <div class="section-header">
+          <h2 id="govTitle">研究治理 / Research Governance</h2>
+          <p id="govDesc">确保研究资产的长期价值与跨团队协作效率。</p>
         </div>
-        <div class="gov-box">
-          <h4 data-i18n="gov2_title">Insights</h4>
-          <p data-i18n="gov2_desc">洞察卡片：证据 → 含义 → 机会 → 建议方案。</p>
+        
+        <div class="gov-flow">
+          <div class="gov-box">
+            <h4>Research</h4>
+            <p>发现问题与机会点</p>
+          </div>
+          <div class="gov-box">
+            <h4>Backlog</h4>
+            <p>转化为开发需求</p>
+          </div>
+          <div class="gov-box">
+            <h4>Design System</h4>
+            <p>沉淀通用设计模式</p>
+          </div>
+          <div class="gov-box">
+            <h4>Product</h4>
+            <p>上线并验证效果</p>
+          </div>
         </div>
-        <div class="gov-box">
-          <h4 data-i18n="gov3_title">Actions</h4>
-          <p data-i18n="gov3_desc">进入 Backlog：按优先级排序；定义验证指标。</p>
-        </div>
-        <div class="gov-box">
-          <h4 data-i18n="gov4_title">System</h4>
-          <p data-i18n="gov4_desc">更新 Design System：组件/模式/文案/状态。</p>
-        </div>
-      </div>
-      <div class="gov-grid">
-        <div class="gov-card">
-          <h3 data-i18n="gov_rules_title">Quality bar for NAS</h3>
-          <div style="margin-bottom: 20px;">
-            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--accent);" data-i18n="gov_rules_h1">High-risk tasks must be validated</h4>
+
+        <div class="gov-grid">
+          <div class="gov-card">
+            <h3 id="gov1Title">高风险任务清单 / High-risk Tasks</h3>
             <ul class="gov-list" id="riskList"></ul>
           </div>
-          <div>
-            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--accent);" data-i18n="gov_rules_h2">Clear output = Decision-ready</h4>
+          <div class="gov-card">
+            <h3 id="gov2Title">决策就绪标准 / Decision-ready Criteria</h3>
             <ul class="gov-list" id="decisionList"></ul>
-          </div>
-        </div>
-        <div class="gov-card">
-          <h3 data-i18n="gov_metrics_title">Suggested metrics (examples)</h3>
-          <div style="margin-bottom: 20px;">
-            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--accent);" data-i18n="gov_metrics_h1">Usability</h4>
-            <ul class="gov-list" id="metricUsability"></ul>
-          </div>
-          <div>
-            <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--accent);" data-i18n="gov_metrics_h2">Trust & Risk</h4>
-            <ul class="gov-list" id="metricTrust"></ul>
           </div>
         </div>
       </div>
@@ -493,307 +516,312 @@
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
       <div class="modal-header">
-        <h3 id="modalTitle">Title</h3>
-        <button class="modal-close" onclick="closeModal()">×</button>
+        <h3 id="modalTitle"></h3>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
       </div>
       <div class="modal-body" id="modalBody"></div>
     </div>
   </div>
 
+  <!-- Toast -->
+  <div class="toast" id="toast">已复制到剪贴板</div>
+
   <script>
     const DATA = {
-      studies: [
-        { id: "s1", date: "2026-01-14", surface: { zh: "Desktop OS", en: "Desktop OS" }, topic: { zh: "首次配置（存储推荐路径）", en: "Onboarding (Recommended storage path)" }, method: { zh: "UT", en: "UT" }, version: "v1", status: { zh: "In progress", en: "In progress" }, summary: { zh: "验证新手是否能在推荐路径下完成存储创建，并理解影响/预计时间/可逆性。", en: "Validate whether novices can complete storage setup via recommended path and understand impact/ETA/reversibility." }, insights: { zh: ["用户对“冗余/RAID”术语不敏感，但对“会不会丢数据”高度敏感。", "缺少“预计耗时 + 可后台运行”解释会导致中断与反复确认。"], en: ["Users don’t respond to RAID jargon; they respond to data-loss risk.", "Missing ETA/background-running explanation causes hesitation and drop-offs."] }, actions: { zh: ["在确认页加入 ETA/影响范围/可逆性说明模块（标准化组件）。", "推荐方案一行解释改为“保护/代价”对照。"], en: ["Add a standardized ETA/impact/reversibility module on confirmation.", "Rewrite recommended option as protection vs trade-off."] } },
-        { id: "s2", date: "2026-01-10", surface: { zh: "Web Admin", en: "Web Admin" }, topic: { zh: "成员与权限（共享空间）", en: "Members & permissions (Shared spaces)" }, method: { zh: "Interview", en: "Interview" }, version: "v1", status: { zh: "Done", en: "Done" }, summary: { zh: "理解管理员对权限的心智模型，以及对“可追溯/审计”的诉求强度。", en: "Understand admin mental models for permissions and demand for traceability/auditing." }, insights: { zh: ["管理员希望权限变更可追溯：谁在何时改了什么。", "普通用户更关注“个人空间/家庭空间”的边界是否清晰。"], en: ["Admins want traceability: who changed what and when.", "Casual users care about boundaries between personal and family spaces."] }, actions: { zh: ["Web 端权限模块增加“变更记录”入口（与日志联动）。"], en: ["Add a change-history entry in permissions (linked to logs)."] } },
-        { id: "s3", date: "2026-01-08", surface: { zh: "Mobile App", en: "Mobile App" }, topic: { zh: "手机相册备份授权文案", en: "Photo backup permission copy" }, method: { zh: "UT", en: "UT" }, version: "v1", status: { zh: "Done", en: "Done" }, summary: { zh: "验证授权文案是否清晰说明“为何需要/拒绝后影响/隐私边界”。", en: "Validate whether permission copy clearly explains why/impact/privacy boundaries." }, insights: { zh: ["“拒绝将无法使用本模块”过于强硬，缺少替代路径与说明。"], en: ["Hard “deny disables module” copy is too aggressive; lacks alternatives and explanation."] }, actions: { zh: ["改为三段式：目的→用途→拒绝影响，并提供“稍后设置”。"], en: ["Rewrite into 3-part: purpose→usage→impact, add 'Set up later'."] } }
+      status: [
+        { id: 1, tag: 'Setup', title: '首次配置流程优化', titleEn: 'OOBE Flow Optimization', desc: '针对 NAS 首次初始化过程中的网络配置与账号绑定环节进行专项研究。', descEn: 'Special research on network config and account binding during NAS initialization.', summary: '用户在网络环境复杂时容易卡死，需要增加自动诊断。', summaryEn: 'Users get stuck in complex network environments; auto-diagnosis needed.', insights: '1. 术语过于专业；2. 进度反馈不明确。', insightsEn: '1. Jargon too technical; 2. Unclear progress feedback.', actions: '更新 OOBE 设计规范 v2.1', actionsEn: 'Update OOBE design spec v2.1', status: 'Done' },
+        { id: 2, tag: 'Permission', title: '成员与权限管理研究', titleEn: 'Member & Permission Study', desc: '探索家庭场景下，管理员对普通成员文件夹访问权限的分配逻辑。', descEn: 'Explore permission allocation logic for family members in NAS.', summary: '现有的“读/写”维度不足以覆盖家庭隐私需求。', summaryEn: 'Existing Read/Write dimensions are insufficient for family privacy.', insights: '用户需要“仅查看但不允许下载”的细分权限。', insightsEn: 'Users need "View only, no download" granular permission.', actions: '新增“隐私分享”模式原型', actionsEn: 'New "Privacy Sharing" mode prototype', status: 'In Progress' },
+        { id: 3, tag: 'Backup', title: '手机相册备份授权文案测试', titleEn: 'Mobile Photo Backup Copy Test', desc: '测试不同文案对用户开启“自动备份”意愿的影响。', descEn: 'Test impact of different copy on user willingness to enable auto-backup.', summary: '强调“隐私安全”比强调“空间释放”转化率高 15%。', summaryEn: 'Emphasizing "Privacy" has 15% higher conversion than "Space".', insights: '用户对“云端删除是否同步本地”存在极大顾虑。', insightsEn: 'Users worry about whether cloud deletion syncs to local.', actions: '全量上线“安全备份”版文案', actionsEn: 'Roll out "Secure Backup" copy', status: 'Done' }
       ],
       steps: [
-        { id: 1, zh: { title: "明确目标与范围", desc: "锁定 1–3 个核心问题与假设，定义成功指标。", do: ["对齐业务目标与研究问题（<=3）", "梳理假设与风险（NAS 高风险优先）", "定义输出与决策场景"], out: ["Research Plan", "Assumption list", "Success metrics"] }, en: { title: "Define goals & scope", desc: "Lock 1–3 questions and hypotheses; define success metrics.", do: ["Align on goals & questions (<=3)", "Map assumptions & risks", "Define outputs and decision context"], out: ["Research plan", "Assumption list", "Success metrics"] } },
-        { id: 2, zh: { title: "选择方法与招募", desc: "按问题选方法，按角色分层招募（新手/熟手/管理员）。", do: ["选择方法组合（访谈/UT/日志等）", "编写 screener 与配额", "准备脚本与任务成功标准"], out: ["Method mix", "Screener", "Discussion/Test guide"] }, en: { title: "Choose methods & recruit", desc: "Pick methods by questions; recruit with segment quotas.", do: ["Select method mix", "Write screener & quotas", "Prepare scripts & success criteria"], out: ["Method mix", "Screener", "Guide & tasks"] } },
-        { id: 3, zh: { title: "执行研究与记录", desc: "访谈/UT/问卷/日志；记录行为、原话、时间戳。", do: ["Think-aloud 任务测试", "记录阻断点/犹豫点/错误", "保留证据链（截图/时间戳）"], out: ["Raw recordings", "Observation notes", "Behavior evidence"] }, en: { title: "Run & capture data", desc: "Interviews/UT/surveys/logs; capture behavior & quotes.", do: ["Task-based UT with think-aloud", "Record errors/hesitations", "Keep evidence links"], out: ["Raw recordings", "Notes", "Evidence links"] } },
-        { id: 4, zh: { title: "分析与综合", desc: "亲和图聚类→洞察卡片→心智模型/JTBD。", do: ["亲和图聚类主题", "提炼洞察卡（证据→含义→机会）", "补齐 JTBD/心智模型"], out: ["Themes", "Insight cards", "Mental model / JTBD"] }, en: { title: "Synthesize & analyze", desc: "Affinity mapping → insight cards → mental model/JTBD.", do: ["Cluster themes", "Write insight cards", "Derive mental model/JTBD"], out: ["Themes", "Insight cards", "Mental model/JTBD"] } },
-        { id: 5, zh: { title: "可视化与沟通", desc: "旅程图/机会地图，对齐团队决策与优先级。", do: ["旅程图/服务蓝图（必要时）", "机会地图（Impact×Effort）", "形成 1 页结论摘要"], out: ["Journey map", "Opportunity map", "1-page summary"] }, en: { title: "Visualize & communicate", desc: "Journey/opportunity maps to align decisions & priorities.", do: ["Journey/service blueprint (if needed)", "Opportunity map", "1-page summary"], out: ["Journey map", "Opportunity map", "1-page summary"] } },
-        { id: 6, zh: { title: "转化为行动", desc: "进入 Backlog；提炼 DS 更新项与验收标准。", do: ["需求入 backlog 并定优先级", "定义验证指标与验收标准", "提炼 DS 更新：组件/模式/文案/状态"], out: ["Backlog items", "Acceptance criteria", "DS update list"] }, en: { title: "Translate into actions", desc: "Backlog + acceptance criteria + DS updates.", do: ["Create prioritized backlog items", "Define validation metrics", "List DS updates"], out: ["Backlog", "Acceptance criteria", "DS updates"] } },
-        { id: 7, zh: { title: "上线验证与沉淀", desc: "复测 + 指标前后对比；归档到研究库。", do: ["上线后复测/灰度监控", "指标前后对比", "归档计划/脚本/证据/结论/行动项"], out: ["Validation report", "Before/after metrics", "Repository package"] }, en: { title: "Validate & archive", desc: "Retest + before/after metrics; archive package.", do: ["Post-release retest", "Before/after metrics", "Archive full package"], out: ["Validation report", "Metrics delta", "Repository package"] } }
+        { id: 1, title: '需求对齐', titleEn: 'Alignment', what: '明确研究目标、核心问题、利益相关者及时间线。', whatEn: 'Define goals, core questions, stakeholders, and timeline.', output: '研究简报 (Research Brief)', outputEn: 'Research Brief' },
+        { id: 2, title: '方案设计', titleEn: 'Design', what: '选择研究方法，编写招募标准，设计访谈大纲或测试脚本。', whatEn: 'Select methods, write recruitment criteria, design scripts.', output: '研究计划 (Research Plan)', outputEn: 'Research Plan' },
+        { id: 3, title: '用户招募', titleEn: 'Recruitment', what: '根据标准筛选用户，完成邀约与排期。', whatEn: 'Filter users based on criteria, complete scheduling.', output: '用户名单 (User List)', outputEn: 'User List' },
+        { id: 4, title: '执行研究', titleEn: 'Execution', what: '进行访谈、可用性测试或问卷发放，收集原始数据。', whatEn: 'Conduct interviews, UT, or surveys; collect raw data.', output: '原始记录 (Raw Notes/Recordings)', outputEn: 'Raw Notes/Recordings' },
+        { id: 5, title: '分析洞察', titleEn: 'Analysis', what: '整理证据，提取发现点，转化为可行动的洞察。', whatEn: 'Organize evidence, extract findings, convert to insights.', output: '洞察卡片 (Insight Cards)', outputEn: 'Insight Cards' },
+        { id: 6, title: '汇报决策', titleEn: 'Reporting', what: '同步研究结论，推动产品决策与 Backlog 优先级调整。', whatEn: 'Sync conclusions, drive decisions and backlog priority.', output: '研究报告 (Research Report)', outputEn: 'Research Report' },
+        { id: 7, title: 'DS 更新', titleEn: 'DS Update', what: '将通用设计模式沉淀至 Design System，确保体验一致性。', whatEn: 'Archive patterns into Design System for consistency.', output: 'DS 组件/规范更新 (DS Updates)', outputEn: 'DS Updates' }
       ],
       methods: [
-        { id: "m1", cat: "qual", zh: { title: "半结构化访谈", tag: "Interview", when: "理解动机、担忧、心智模型与决策原因。", outputs: ["洞察卡片", "心智模型", "JTBD/Job Stories"], notes: "对 NAS 场景尤其关注：数据安全焦虑、术语理解、信任信号。" }, en: { title: "Semi-structured interviews", tag: "Interview", when: "Understand motivations, concerns, mental models and decision drivers.", outputs: ["Insight cards", "Mental model", "JTBD/Job stories"], notes: "For NAS, focus on safety anxiety, terminology comprehension, trust signals." } },
-        { id: "m2", cat: "qual", zh: { title: "任务型可用性测试", tag: "UT", when: "验证流程是否能完成、哪里卡住、错误与犹豫点。", outputs: ["成功率/时长/错误", "可复现问题清单", "改进建议"], notes: "适用于首次配置、存储创建、备份、权限、告警处理。" }, en: { title: "Task-based usability testing", tag: "UT", when: "Validate completion, find blockers, errors and hesitations.", outputs: ["Success/time/errors", "Repro issue list", "Recommendations"], notes: "Great for onboarding, storage, backup, permissions, alerts." } },
-        { id: "m3", cat: "qual", zh: { title: "情境走查（现场观察）", tag: "Contextual", when: "在真实家庭/工作室环境中观察实际行为。", outputs: ["环境约束", "真实任务链", "触点机会"], notes: "适合验证“桌面端/设备摆放/网络环境”对操作的影响。" }, en: { title: "Contextual inquiry", tag: "Contextual", when: "Observe real behaviors in home/studio environments.", outputs: ["Constraints", "Real task chain", "Opportunities"], notes: "Validates effects of hardware placement & network conditions." } },
-        { id: "m4", cat: "quant", zh: { title: "问卷（规模化）", tag: "Survey", when: "快速验证偏好/满意度，获取规模判断。", outputs: ["趋势与分布", "分群对比", "基线指标"], notes: "适合做前后对比，但要和 UT/访谈结合解释原因。" }, en: { title: "Survey (at scale)", tag: "Survey", when: "Validate preferences/satisfaction at scale.", outputs: ["Trends", "Segment comparison", "Baseline metrics"], notes: "Use with UT/interviews to interpret the why." } },
-        { id: "m5", cat: "ia", zh: { title: "卡片分类", tag: "Card sort", when: "验证导航与命名是否符合用户分类方式。", outputs: ["信息架构建议", "命名风险点"], notes: "适合桌面端侧边导航、控制面板分类、功能命名。" }, en: { title: "Card sorting", tag: "Card sort", when: "Validate how users group content and labels.", outputs: ["IA recommendations", "Naming risks"], notes: "Useful for sidebar nav, settings categories, feature naming." } },
-        { id: "m6", cat: "ia", zh: { title: "Tree Testing", tag: "Tree test", when: "验证“找得到”与路径直觉，不依赖视觉。", outputs: ["找到率", "路径偏差", "标签问题"], notes: "适合验证 Web 管理端与桌面端“设置/权限/备份”路径。" }, en: { title: "Tree testing", tag: "Tree test", when: "Validate findability and path intuition without visuals.", outputs: ["Find rate", "Path deviation", "Label issues"], notes: "Great for settings/permissions/backup navigation." } },
-        { id: "m7", cat: "long", zh: { title: "日记研究", tag: "Diary", when: "观察长期使用习惯与告警发生后的真实反应。", outputs: ["长期痛点", "使用节奏", "触发条件"], notes: "对 NAS 特别关键：备份是否持续、告警疲劳与信任崩溃点。" }, en: { title: "Diary study", tag: "Diary", when: "Observe long-term habits and alert responses.", outputs: ["Long-term pain points", "Rhythm", "Triggers"], notes: "Key for NAS: sustained backups, alert fatigue, trust breakpoints." } },
-        { id: "m8", cat: "data", zh: { title: "行为日志/漏斗分析", tag: "Analytics", when: "用数据找异常：转化、跳出、错误率、复访。", outputs: ["漏斗与路径", "关键流失点", "假设验证"], notes: "用于定位问题，需结合 UT/访谈解释原因并给方案。" }, en: { title: "Analytics & funnel analysis", tag: "Analytics", when: "Detect anomalies in conversion, drop-off, errors, retention.", outputs: ["Funnels/paths", "Drop points", "Hypothesis checks"], notes: "Pair with UT/interviews to explain and fix." } }
+        { id: 1, tag: 'Qualitative', title: '半结构化访谈', titleEn: 'Semi-structured Interview', desc: '深入了解用户动机、担忧及心智模型。', descEn: 'Deep dive into user motivations, concerns, and mental models.', category: '定性' },
+        { id: 2, tag: 'Qualitative', title: '任务型可用性测试', titleEn: 'Task-based UT', desc: '验证流程是否顺畅，发现操作障碍点。', descEn: 'Verify flow smoothness and identify operational barriers.', category: '定性' },
+        { id: 3, tag: 'Qualitative', title: '情境走查', titleEn: 'Contextual Inquiry', desc: '在真实家庭/工作环境中观察实际行为。', descEn: 'Observe actual behavior in real home/work environments.', category: '定性' },
+        { id: 4, tag: 'Quantitative', title: '问卷调查', titleEn: 'Survey', desc: '快速验证偏好，获取规模化数据支持。', descEn: 'Quickly verify preferences and get large-scale data support.', category: '定量' },
+        { id: 5, tag: 'IA', title: '卡片分类', titleEn: 'Card Sorting', desc: '验证导航与命名是否符合用户分类方式。', descEn: 'Verify if navigation and naming match user mental models.', category: '信息架构' },
+        { id: 6, tag: 'IA', title: '树状测试', titleEn: 'Tree Testing', desc: '验证路径直觉性，不依赖视觉设计。', descEn: 'Verify path intuition without relying on visual design.', category: '信息架构' },
+        { id: 7, tag: 'Behavior', title: '日记研究', titleEn: 'Diary Study', desc: '记录用户在长周期内的真实使用习惯。', descEn: 'Record real usage habits over a long period.', category: '长期行为' },
+        { id: 8, tag: 'Behavior', title: '行为日志分析', titleEn: 'Log Analysis', desc: '通过埋点数据还原用户真实转化路径。', descEn: 'Restore real conversion paths via tracking data.', category: '数据分析' }
       ],
       templates: [
-        { id: "tpl_plan", cat: "plan", zh: { title: "研究计划（Research Plan）", desc: "目标/问题/方法/样本/风险/指标/交付物。", content: "# 研究计划（v1）\n- 背景与目标：\n- 核心问题（<=3）：\n- 假设（H1/H2/H3）：\n- 方法组合：\n- 样本与分层（新手/熟手/管理员）：\n- 任务范围（关键路径/高风险）：\n- 指标（成功率/时长/错误/信任度）：\n- 风险与隐私：\n- 时间线：\n- 交付物：结论摘要 + 洞察卡片 + 行动项 + DS 更新建议" }, en: { title: "Research Plan", desc: "Goals/questions/methods/sample/risks/metrics/deliverables.", content: "# Research Plan (v1)\n- Background & goals:\n- Key questions (<=3):\n- Hypotheses (H1/H2/H3):\n- Method mix:\n- Sample & quotas (new/experienced/admin):\n- Task scope (key flows / high-risk):\n- Metrics (success/time/errors/trust):\n- Risks & privacy:\n- Timeline:\n- Deliverables: 1-page summary + insight cards + actions + DS updates" } },
-        { id: "tpl_ut_desktop", cat: "ut", zh: { title: "桌面端 UT 脚本（Onboarding）", desc: "首次进入→创建存储→文件管理→备份→任务中心→预警处理。", content: "# Desktop OS UT Script (Onboarding)\nT1 进入首页：10 秒内指出“下一步”\nT2 推荐存储创建：理解影响/预计时间/可逆性\nT3 文件管理：新建文件夹、拖拽上传、搜索与详情面板\nT4 批量操作：多选、右键菜单、撤销/回收站\nT5 备份：手机照片/电脑文件（进度、暂停、失败处理）\nT6 任务中心：找到入口、暂停/恢复、查看详情（速度/ETA）\nT7 预警处理：温度/容量/SMART（发生→影响→行动入口）\n\n记录：S/P/F、时长、错误、犹豫点、原话时间戳" }, en: { title: "Desktop OS UT Script (Onboarding)", desc: "First entry → storage → files → backup → task center → alerts.", content: "# Desktop OS UT Script (Onboarding)\nT1 Home: identify next step within 10s\nT2 Recommended storage: impact/ETA/reversibility\nT3 Files: folder, drag-drop upload, search, detail panel\nT4 Batch: multi-select, context menu, undo/trash\nT5 Backup: phone/computer (progress/pause/fail)\nT6 Tasks: find entry, pause/resume, details (speed/ETA)\nT7 Alerts: temp/capacity/SMART (what/impact/next action)\n\nCapture: S/P/F, time, errors, hesitations, timestamped quotes" } },
-        { id: "tpl_screener", cat: "screener", zh: { title: "招募筛选（Screener）", desc: "NAS 经验、数据类型、平台、共享需求、风险敏感度。", content: "# 招募筛选（v1）\n1) NAS 使用经验：无/偶尔/深度\n2) 核心数据类型：照片/视频/工作/生产力资产\n3) 常用平台：Windows/macOS/iOS/Android\n4) 共享需求：家庭/团队/无\n5) 是否有数据丢失经历：有/无（简述）\n6) 远程测试是否接受：录屏/录音（同意/不同意）" }, en: { title: "Recruitment Screener", desc: "NAS experience, data types, platforms, sharing needs, risk sensitivity.", content: "# Screener (v1)\n1) NAS experience (none/once/regular)\n2) Data types (photos/videos/work/assets)\n3) Platforms (Windows/macOS/iOS/Android)\n4) Sharing needs (family/team/none)\n5) Data loss experience (yes/no, brief)\n6) Remote test consent (screen/audio recording: yes/no)" } },
-        { id: "tpl_insight", cat: "insight", zh: { title: "洞察卡片（Insight Card）", desc: "证据 → 含义 → 机会 → 建议方案/验收标准。", content: "# 洞察卡片\n- 现象（Observation）：\n- 证据（Evidence）：原话/截图/时间戳\n- 含义（Meaning）：为什么会这样（心智模型/风险）\n- 机会（Opportunity）：我们能改什么\n- 建议方案（Recommendation）：组件/流程/文案\n- 验收标准（Acceptance）：可用性指标 + 上线指标" }, en: { title: "Insight Card", desc: "Evidence → meaning → opportunity → recommendation + acceptance.", content: "# Insight Card\n- Observation:\n- Evidence: quote/screenshot/timestamp\n- Meaning: why (mental model / risk)\n- Opportunity: what to improve\n- Recommendation: component/flow/copy\n- Acceptance: usability + post-release metrics" } },
-        { id: "tpl_repo", cat: "repo", zh: { title: "归档清单（Repository Package）", desc: "保证可追溯、可复用、可对比版本。", content: "# Repository Package\n- Research Plan\n- Guide / Script + Tasks + Success criteria\n- Raw evidence links (recordings/notes/timestamps)\n- Affinity map / Themes\n- Insight cards\n- 1-page summary\n- Opportunity map (Impact×Effort)\n- Backlog items + priority + validation metrics\n- Design System updates (patterns/components/copy/states)\n- Post-release validation report" }, en: { title: "Repository Package Checklist", desc: "Ensure traceability, reusability, and version comparisons.", content: "# Repository Package\n- Research plan\n- Guide/script + tasks + success criteria\n- Raw evidence links\n- Themes/affinity mapping\n- Insight cards\n- 1-page summary\n- Opportunity map\n- Backlog items + priority + metrics\n- Design System updates\n- Post-release validation report" } }
+        { id: 1, tag: 'Plan', title: '通用研究计划模板', titleEn: 'General Research Plan', desc: '包含背景、目标、方法、排期等标准模块。', descEn: 'Standard modules: background, goals, methods, timeline.', content: '【研究计划模板】\n1. 研究背景：为什么要做这个研究？\n2. 研究目标：我们要解决什么问题？\n3. 研究方法：采用什么手段？\n4. 用户画像：招募什么样的用户？\n5. 时间排期：各阶段节点。', contentEn: '[Research Plan Template]\n1. Background: Why this study?\n2. Goals: What questions to solve?\n3. Methods: How to conduct?\n4. User Profile: Who to recruit?\n5. Timeline: Key milestones.' },
+        { id: 2, tag: 'Script', title: '可用性测试脚本', titleEn: 'UT Script Template', desc: '包含开场白、任务设置、追问技巧。', descEn: 'Includes intro, task settings, and probing techniques.', content: '【UT 脚本模板】\n1. 开场白：告知目的，缓解紧张。\n2. 预热访谈：了解背景。\n3. 任务环节：设置 3-5 个核心任务。\n4. 满意度评价：ASQ/SUS 问卷。\n5. 结束语：感谢并赠送礼品。', contentEn: '[UT Script Template]\n1. Intro: Purpose and comfort.\n2. Warm-up: Background info.\n3. Tasks: 3-5 core tasks.\n4. Satisfaction: ASQ/SUS survey.\n5. Closing: Thanks and incentive.' },
+        { id: 3, tag: 'Screener', title: '用户招募筛选表', titleEn: 'User Screener', desc: '针对 NAS 用户的分层招募标准。', descEn: 'Granular recruitment criteria for NAS users.', content: '【招募筛选表】\n- 新手用户：购买 1 个月内，仅使用基础备份。\n- 熟手用户：购买 6 个月以上，使用 Docker/虚拟机。\n- 管理员：家庭网络环境搭建者。', contentEn: '[User Screener]\n- Novice: <1 month, basic backup only.\n- Advanced: >6 months, uses Docker/VM.\n- Admin: Family network builder.' },
+        { id: 4, tag: 'Insight', title: '标准洞察卡片', titleEn: 'Standard Insight Card', desc: '证据 → 含义 → 机会点的专业结构。', descEn: 'Professional structure: Evidence → Meaning → Opportunity.', content: '【洞察卡片模板】\n- 现象/证据：用户在 XX 页面停留了 30 秒。\n- 含义/痛点：用户找不到“确认”按钮。\n- 机会点/建议：将按钮改为悬浮固定位置。', contentEn: '[Insight Card Template]\n- Evidence: User stayed on XX page for 30s.\n- Meaning: User can\'t find "Confirm" button.\n- Opportunity: Fix button to floating position.' },
+        { id: 5, tag: 'Archive', title: '研究归档清单', titleEn: 'Archive Checklist', desc: '确保研究资产可追溯的完整清单。', descEn: 'Complete checklist for traceable research assets.', content: '【归档清单】\n1. 研究计划 (PDF)\n2. 访谈大纲/脚本 (Doc)\n3. 原始录音/录像 (Link)\n4. 洞察卡片 (Board)\n5. 最终报告 (PPT/PDF)', contentEn: '[Archive Checklist]\n1. Plan (PDF)\n2. Script (Doc)\n3. Recordings (Link)\n4. Insight Cards (Board)\n5. Final Report (PPT/PDF)' }
       ],
-      i18n: {
-        zh: {
-          brand_sub: "用证据驱动 NAS 体验决策", nav_overview: "首页", nav_sop: "SOP 流程", nav_methods: "方法库", nav_templates: "模板", nav_repository: "归档规范", nav_governance: "治理",
-          hero_title: "Zettlab Research Hub", hero_sub: "统一 NAS（桌面端 OS / Web 管理端 / App）的用户研究方法、交付物与质量门槛。研究结论必须可复现、可追溯、可行动。",
-          cta_start: "发起研究 / Start Study", cta_ut: "运行 UT / Run UT", cta_repo: "归档清单 / Repository",
-          v1_title: "可复现 / Repeatable", v1_desc: "统一脚本、任务与成功标准；同一问题能被不同人重复验证。",
-          v2_title: "可行动 / Actionable", v2_desc: "洞察卡片必须映射到机会点、需求优先级与 Design System 更新项。",
-          v3_title: "可验证 / Verifiable", v3_desc: "上线前后用指标闭环验证，尤其关注 NAS 高风险任务（删除/格式化/权限）。",
-          dash_title: "研究动态 / Research Status", dash_desc: "最近的研究项目与资产概览。",
-          sop_title: "标准研究流程 / Standard Research Flow (SOP)", sop_desc: "从目标定义到上线验证的 7 步闭环路径。",
-          methods_title: "方法工具箱 / Method Toolkit", methods_desc: "根据研究问题选择最合适的方法。",
-          tpl_title: "实战模板 / Templates", tpl_desc: "直接复用的研究计划、脚本与归档模板。",
-          repo_title: "归档与命名规范 / Repository & Naming Rules", repo_desc: "研究资产必须可追溯：统一命名、统一归档内容、统一链接到结论与行动项。",
-          repo_naming_title: "命名格式 / Naming Pattern", btn_copy_naming: "复制命名规则 / Copy Rule",
-          repo_required_title: "必选归档项 / Required Artifacts",
-          gov_title: "治理流程 / Governance: Research → Backlog → DS", gov_desc: "研究不是报告，而是输入系统：洞察进入机会地图；行动项进入 Backlog；模式进入 Design System。",
-          gov1_title: "Evidence", gov1_desc: "访谈/UT/日志/问卷，形成可追溯证据链。",
-          gov2_title: "Insights", gov2_desc: "洞察卡片：证据 → 含义 → 机会 → 建议方案。",
-          gov3_title: "Actions", gov3_desc: "进入 Backlog：按优先级排序；定义验证指标。",
-          gov4_title: "System", gov4_desc: "更新 Design System：组件/模式/文案/状态。",
-          gov_rules_title: "Quality bar for NAS", gov_rules_h1: "High-risk tasks must be validated", gov_rules_h2: "Clear output = Decision-ready",
-          gov_metrics_title: "Suggested metrics (examples)", gov_metrics_h1: "Usability", gov_metrics_h2: "Trust & Risk"
-        },
-        en: {
-          brand_sub: "Evidence-driven decisions for NAS", nav_overview: "Home", nav_sop: "SOP", nav_methods: "Methods", nav_templates: "Templates", nav_repository: "Repo", nav_governance: "Gov",
-          hero_title: "Zettlab Research Hub", hero_sub: "Standardize methods, deliverables, and quality bars across NAS platforms. Outputs must be repeatable, traceable, and actionable.",
-          cta_start: "Start Study", cta_ut: "Run UT", cta_repo: "Repository",
-          v1_title: "Repeatable", v1_desc: "Unified scripts and tasks; same questions can be re-tested consistently.",
-          v2_title: "Actionable", v2_desc: "Insight cards map to opportunities, backlog priorities and DS updates.",
-          v3_title: "Verifiable", v3_desc: "Close the loop with metrics, especially for high-risk NAS actions.",
-          dash_title: "Research Status", dash_desc: "Latest studies and assets overview.",
-          sop_title: "Standard Research Flow (SOP)", sop_desc: "7-step loop from goals to post-release validation.",
-          methods_title: "Method Toolkit", methods_desc: "Pick the right method for your research questions.",
-          tpl_title: "Templates", tpl_desc: "Reusable templates for plans, scripts, and repository packages.",
-          repo_title: "Repository & Naming Rules", repo_desc: "Assets must be traceable: consistent naming and complete packages.",
-          repo_naming_title: "Naming Pattern", btn_copy_naming: "Copy Naming Rule",
-          repo_required_title: "Required Artifacts",
-          gov_title: "Governance: Research → Backlog → DS", gov_desc: "Research is an input system: insights to opportunities; actions to backlog.",
-          gov1_title: "Evidence", gov1_desc: "Interviews/UT/logs/surveys; create a traceable evidence chain.",
-          gov2_title: "Insights", gov2_desc: "Insight cards: evidence → meaning → opportunity → recommendation.",
-          gov3_title: "Actions", gov3_desc: "Backlog items prioritized; define validation metrics.",
-          gov4_title: "System", gov4_desc: "Update Design System: components/patterns/copy/states.",
-          gov_rules_title: "Quality bar for NAS", gov_rules_h1: "High-risk tasks must be validated", gov_rules_h2: "Clear output = Decision-ready",
-          gov_metrics_title: "Suggested metrics (examples)", gov_metrics_h1: "Usability", gov_metrics_h2: "Trust & Risk"
-        }
+      risks: [
+        { title: '数据迁移失败', titleEn: 'Data Migration Failure', desc: '从旧 NAS 或硬盘搬家时的报错处理。', descEn: 'Error handling during migration from old NAS/HDD.' },
+        { title: '外网访问受阻', titleEn: 'Remote Access Blocked', desc: '内网穿透失败导致无法远程查看文件。', descEn: 'Remote access failure due to DDNS/Relay issues.' },
+        { title: '共享链接泄露', titleEn: 'Shared Link Leakage', desc: '敏感文件通过公开链接被非授权访问。', descEn: 'Unauthorized access to sensitive files via public links.' }
+      ],
+      decisions: [
+        { title: 'Clear output = Decision-ready', desc: '研究结论必须能直接回答“做还是不做”。', descEn: 'Conclusions must directly answer "Go or No-go".' },
+        { title: 'Trust & Risk', desc: '衡量用户对私有云存储的安全信任感。', descEn: 'Measure user trust in private cloud storage security.' },
+        { title: 'Actionable Insights', desc: '每一个洞察必须对应一个 Backlog 任务。', descEn: 'Every insight must map to a Backlog task.' }
+      ]
+    };
+
+    const I18N = {
+      zh: {
+        heroTitle: '用研规范与知识库',
+        heroDesc: '为 NAS 桌面端、Web 管理端及移动端打造的标准化研究体系，确保研究结果可复现、可行动、可验证。',
+        val1Title: '可复现 / Reproducible',
+        val1Desc: '标准化的 SOP 流程与方法工具箱，确保不同研究员在面对相似问题时能产出一致的高质量结果。',
+        val2Title: '可行动 / Actionable',
+        val2Desc: '研究结论直接挂钩 Backlog 与 Design System，确保每一个洞察都能转化为具体的产品改进项。',
+        val3Title: '可验证 / Verifiable',
+        val3Desc: '建立核心体验指标（Suggested Metrics），通过持续的可用性测试验证设计方案的有效性。',
+        statusTitle: '研究动态 / Research Status',
+        statusDesc: '当前正在进行的重点研究项目及最新归档案例。',
+        sopTitle: '标准研究流程 / Standard Research Flow (SOP)',
+        sopDesc: '从需求对齐到 DS 更新的 7 步标准化作业程序。',
+        methodsTitle: '方法工具箱 / Method Toolkit',
+        methodsDesc: '根据研究问题选择最合适的方法。',
+        templatesTitle: '实战模板 / Practical Templates',
+        templatesDesc: '直接复用的计划、脚本与归档模板。',
+        govTitle: '研究治理 / Research Governance',
+        govDesc: '确保研究资产的长期价值与跨团队协作效率。',
+        gov1Title: '高风险任务清单 / High-risk Tasks',
+        gov2Title: '决策就绪标准 / Decision-ready Criteria',
+        searchPlaceholder: '搜索方法 / 模板 / 研究案例...',
+        btnCopy: '复制内容',
+        btnDetail: '查看详情',
+        btnPreview: '预览模板',
+        toastCopy: '已复制到剪贴板',
+        whatTitle: '本步要做什么',
+        outputTitle: '本步产出',
+        themeDark: 'Dark',
+        themeLight: 'Light'
+      },
+      en: {
+        heroTitle: 'Research Ops & Knowledge Base',
+        heroDesc: 'Standardized research system for NAS Desktop, Web, and Mobile, ensuring results are reproducible, actionable, and verifiable.',
+        val1Title: 'Reproducible',
+        val1Desc: 'Standardized SOPs and toolkits ensure consistent high-quality results across different researchers.',
+        val2Title: 'Actionable',
+        val2Desc: 'Insights link directly to Backlog and Design System, ensuring every finding turns into product improvements.',
+        val3Title: 'Verifiable',
+        val3Desc: 'Establish core metrics and verify design effectiveness through continuous usability testing.',
+        statusTitle: 'Research Status',
+        statusDesc: 'Ongoing key research projects and latest archived cases.',
+        sopTitle: 'Standard Research Flow (SOP)',
+        sopDesc: '7-step standardized procedure from alignment to DS update.',
+        methodsTitle: 'Method Toolkit',
+        methodsDesc: 'Select the most appropriate method based on research questions.',
+        templatesTitle: 'Practical Templates',
+        templatesDesc: 'Ready-to-use templates for plans, scripts, and archives.',
+        govTitle: 'Research Governance',
+        govDesc: 'Ensuring long-term value of research assets and cross-team efficiency.',
+        gov1Title: 'High-risk Tasks',
+        gov2Title: 'Decision-ready Criteria',
+        searchPlaceholder: 'Search methods / templates / cases...',
+        btnCopy: 'Copy Content',
+        btnDetail: 'View Details',
+        btnPreview: 'Preview',
+        toastCopy: 'Copied to clipboard',
+        whatTitle: 'What to do',
+        outputTitle: 'Outputs',
+        themeDark: 'Dark',
+        themeLight: 'Light'
       }
     };
 
     let currentLang = 'zh';
-    let currentMethodCat = 'all';
-    let currentTplCat = 'all';
+    let currentTheme = 'light';
 
-    function init() {
+    function toggleLang() {
+      currentLang = currentLang === 'zh' ? 'en' : 'zh';
+      updateUI();
+    }
+
+    function toggleTheme() {
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      document.getElementById('themeToggle').textContent = currentTheme === 'light' ? 'Dark' : 'Light';
+    }
+
+    function updateUI() {
+      const lang = I18N[currentLang];
+      for (let id in lang) {
+        const el = document.getElementById(id);
+        if (el) {
+          if (el.tagName === 'INPUT') el.placeholder = lang[id];
+          else el.textContent = lang[id];
+        }
+      }
       renderAll();
-      setupEventListeners();
     }
 
     function renderAll() {
-      applyI18n();
-      renderStudies();
-      renderSop();
-      renderMethodFilters();
+      renderStatus();
+      renderSOP();
       renderMethods();
-      renderTplFilters();
       renderTemplates();
-      renderRepoInfo();
-      renderGovLists();
+      renderGovernance();
     }
 
-    function applyI18n() {
-      const langData = DATA.i18n[currentLang];
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (langData[key]) el.textContent = langData[key];
-      });
-      document.getElementById('searchInput').placeholder = currentLang === 'zh' ? "搜索方法/模板/研究... Search..." : "Search methods/templates/studies...";
-      document.getElementById('langBtn').textContent = currentLang === 'zh' ? "EN" : "中文";
-    }
-
-    function renderStudies() {
-      const grid = document.getElementById('studiesGrid');
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = DATA.studies.filter(s => 
-        s.topic[currentLang].toLowerCase().includes(q) || 
-        s.summary[currentLang].toLowerCase().includes(q)
-      );
-      
-      grid.innerHTML = filtered.map(s => `
-        <div class="card">
-          <div class="card-tag">${s.surface[currentLang]}</div>
-          <h3>${s.topic[currentLang]}</h3>
-          <p>${s.summary[currentLang]}</p>
-          <div class="card-footer">
-            <span style="font-size: 12px; color: var(--text-secondary)">${s.date} · ${s.method[currentLang]}</span>
-            <button class="card-btn" onclick="openStudyModal('${s.id}')">${currentLang === 'zh' ? '查看详情' : 'Details'}</button>
+    function renderStatus() {
+      const grid = document.getElementById('statusGrid');
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      grid.innerHTML = DATA.status
+        .filter(s => s.title.toLowerCase().includes(query) || s.titleEn.toLowerCase().includes(query))
+        .map(s => `
+          <div class="card">
+            <div class="card-tag">${s.tag}</div>
+            <h3>${currentLang === 'zh' ? s.title : s.titleEn}</h3>
+            <p>${currentLang === 'zh' ? s.desc : s.descEn}</p>
+            <div class="card-footer">
+              <span class="card-tag" style="color: ${s.status === 'Done' ? '#10b981' : '#f59e0b'}">${s.status}</span>
+              <button class="card-btn" onclick="showStatusDetail(${s.id})">${I18N[currentLang].btnDetail}</button>
+            </div>
           </div>
-        </div>
-      `).join('');
+        `).join('');
     }
 
-    function renderSop() {
-      const container = document.getElementById('sopSteps');
-      container.innerHTML = DATA.steps.map(s => `
-        <div class="sop-step" onclick="showSopDetail(${s.id})" id="sop-step-${s.id}">
-          <span>STEP ${s.id}</span>
-          <strong>${s[currentLang].title}</strong>
+    function renderSOP() {
+      const steps = document.getElementById('sopSteps');
+      steps.innerHTML = DATA.steps.map((s, i) => `
+        <div class="sop-step ${i === 0 ? 'active' : ''}" onclick="activateSOP(${i})">
+          <span>Step ${s.id}</span>
+          <strong>${currentLang === 'zh' ? s.title : s.titleEn}</strong>
         </div>
       `).join('');
-      showSopDetail(1);
+      activateSOP(0);
     }
 
-    function showSopDetail(id) {
-      document.querySelectorAll('.sop-step').forEach(el => el.classList.remove('active'));
-      document.getElementById(`sop-step-${id}`).classList.add('active');
-      
-      const step = DATA.steps.find(s => s.id === id);
+    function activateSOP(index) {
+      document.querySelectorAll('.sop-step').forEach((el, i) => el.classList.toggle('active', i === index));
+      const s = DATA.steps[index];
       const detail = document.getElementById('sopDetail');
       detail.classList.add('active');
       detail.innerHTML = `
         <div class="sop-detail-grid">
           <div>
-            <h4>${currentLang === 'zh' ? '本步要做什么' : 'What to do'}</h4>
-            <ul>${step[currentLang].do.map(item => `<li>${item}</li>`).join('')}</ul>
+            <h4>${I18N[currentLang].whatTitle}</h4>
+            <p style="font-size: 18px; font-weight: 500;">${currentLang === 'zh' ? s.what : s.whatEn}</p>
           </div>
           <div>
-            <h4>${currentLang === 'zh' ? '本步产出' : 'Deliverables'}</h4>
-            <ul>${step[currentLang].out.map(item => `<li>${item}</li>`).join('')}</ul>
+            <h4>${I18N[currentLang].outputTitle}</h4>
+            <div class="card-tag" style="font-size: 16px; background: var(--accent-glow); padding: 8px 16px; border-radius: 8px; display: inline-block;">
+              ${currentLang === 'zh' ? s.output : s.outputEn}
+            </div>
           </div>
         </div>
       `;
     }
 
-    function renderMethodFilters() {
-      const cats = [
-        { id: 'all', zh: '全部', en: 'All' },
-        { id: 'qual', zh: '定性', en: 'Qual' },
-        { id: 'quant', zh: '定量', en: 'Quant' },
-        { id: 'ia', zh: '信息架构', en: 'IA' },
-        { id: 'long', zh: '长期行为', en: 'Long-term' },
-        { id: 'data', zh: '数据分析', en: 'Analytics' }
-      ];
-      const bar = document.getElementById('methodFilters');
-      bar.innerHTML = cats.map(c => `
-        <div class="filter-chip ${currentMethodCat === c.id ? 'active' : ''}" onclick="filterMethods('${c.id}')">
-          ${currentLang === 'zh' ? c.zh : c.en}
-        </div>
-      `).join('');
-    }
-
-    function filterMethods(cat) {
-      currentMethodCat = cat;
-      renderMethodFilters();
-      renderMethods();
-    }
-
     function renderMethods() {
+      const filters = document.getElementById('methodFilters');
+      const categories = ['全部', '定性', '定量', '信息架构', '长期行为', '数据分析'];
+      filters.innerHTML = categories.map(c => `
+        <div class="filter-chip ${c === '全部' ? 'active' : ''}" onclick="filterMethods('${c}', this)">${c}</div>
+      `).join('');
+      filterMethods('全部');
+    }
+
+    function filterMethods(cat, el) {
+      if (el) {
+        el.parentElement.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+      }
       const grid = document.getElementById('methodGrid');
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = DATA.methods.filter(m => {
-        const catMatch = currentMethodCat === 'all' || m.cat === currentMethodCat;
-        const searchMatch = m[currentLang].title.toLowerCase().includes(q) || m[currentLang].when.toLowerCase().includes(q);
-        return catMatch && searchMatch;
-      });
-      
-      grid.innerHTML = filtered.map(m => `
-        <div class="card">
-          <div class="card-tag">${m[currentLang].tag}</div>
-          <h3>${m[currentLang].title}</h3>
-          <p>${m[currentLang].when}</p>
-          <div class="card-footer">
-            <button class="card-btn" onclick="openMethodModal('${m.id}')">${currentLang === 'zh' ? '查看详情' : 'Details'}</button>
+      grid.innerHTML = DATA.methods
+        .filter(m => cat === '全部' || m.category === cat)
+        .map(m => `
+          <div class="card">
+            <div class="card-tag">${m.tag}</div>
+            <h3>${currentLang === 'zh' ? m.title : m.titleEn}</h3>
+            <p>${currentLang === 'zh' ? m.desc : m.descEn}</p>
+            <button class="card-btn" onclick="showMethodDetail(${m.id})">${I18N[currentLang].btnDetail}</button>
           </div>
-        </div>
-      `).join('');
-    }
-
-    function renderTplFilters() {
-      const cats = [
-        { id: 'all', zh: '全部', en: 'All' },
-        { id: 'plan', zh: '研究计划', en: 'Plan' },
-        { id: 'ut', zh: 'UT 脚本', en: 'UT' },
-        { id: 'screener', zh: '招募筛选', en: 'Screener' },
-        { id: 'insight', zh: '洞察卡', en: 'Insight' },
-        { id: 'repo', zh: '归档清单', en: 'Repo' }
-      ];
-      const bar = document.getElementById('tplFilters');
-      bar.innerHTML = cats.map(c => `
-        <div class="filter-chip ${currentTplCat === c.id ? 'active' : ''}" onclick="filterTpls('${c.id}')">
-          ${currentLang === 'zh' ? c.zh : c.en}
-        </div>
-      `).join('');
-    }
-
-    function filterTpls(cat) {
-      currentTplCat = cat;
-      renderTplFilters();
-      renderTemplates();
+        `).join('');
     }
 
     function renderTemplates() {
-      const grid = document.getElementById('tplGrid');
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = DATA.templates.filter(t => {
-        const catMatch = currentTplCat === 'all' || t.cat === currentTplCat;
-        const searchMatch = t[currentLang].title.toLowerCase().includes(q);
-        return catMatch && searchMatch;
-      });
-      
-      grid.innerHTML = filtered.map(t => `
-        <div class="card">
-          <div class="card-tag">${t.cat.toUpperCase()}</div>
-          <h3>${t[currentLang].title}</h3>
-          <p>${t[currentLang].desc}</p>
-          <div class="card-footer">
-            <button class="card-btn" onclick="openTplModal('${t.id}')">${currentLang === 'zh' ? '预览' : 'Preview'}</button>
-            <button class="card-btn" onclick="copyText('${t[currentLang].content.replace(/'/g, "\\'")}')">${currentLang === 'zh' ? '复制' : 'Copy'}</button>
+      const filters = document.getElementById('templateFilters');
+      const tags = ['全部', 'Plan', 'Script', 'Screener', 'Insight', 'Archive'];
+      filters.innerHTML = tags.map(t => `
+        <div class="filter-chip ${t === '全部' ? 'active' : ''}" onclick="filterTemplates('${t}', this)">${t}</div>
+      `).join('');
+      filterTemplates('全部');
+    }
+
+    function filterTemplates(tag, el) {
+      if (el) {
+        el.parentElement.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+      }
+      const grid = document.getElementById('templateGrid');
+      grid.innerHTML = DATA.templates
+        .filter(t => tag === '全部' || t.tag === tag)
+        .map(t => `
+          <div class="card">
+            <div class="card-tag">${t.tag}</div>
+            <h3>${currentLang === 'zh' ? t.title : t.titleEn}</h3>
+            <p>${currentLang === 'zh' ? t.desc : t.descEn}</p>
+            <button class="card-btn" onclick="showTemplatePreview(${t.id})">${I18N[currentLang].btnPreview}</button>
           </div>
-        </div>
+        `).join('');
+    }
+
+    function renderGovernance() {
+      document.getElementById('riskList').innerHTML = DATA.risks.map(r => `
+        <li><strong>${currentLang === 'zh' ? r.title : r.titleEn}</strong>: ${currentLang === 'zh' ? r.desc : r.descEn}</li>
+      `).join('');
+      document.getElementById('decisionList').innerHTML = DATA.decisions.map(d => `
+        <li><strong>${currentLang === 'zh' ? d.title : d.titleEn}</strong>: ${currentLang === 'zh' ? d.desc : d.descEn}</li>
       `).join('');
     }
 
-    function renderRepoInfo() {
-      document.getElementById('namingPattern').textContent = "[YYYY-MM-DD]_[Surface]_[Topic]_[Method]_[Version]\nExample: 2026-01-16_DesktopOS_Onboarding_UT_v1";
-      const artifacts = [
-        { zh: "研究计划（目标/问题/方法/样本/风险）", en: "Research plan (goals/questions/methods/sample/risks)" },
-        { zh: "脚本与任务列表（含成功标准 S/P/F）", en: "Script & tasks (with success criteria S/P/F)" },
-        { zh: "原始记录链接（录屏/录音/笔记/时间戳）", en: "Raw evidence links (recordings/notes/timestamps)" },
-        { zh: "洞察卡片（证据→含义→机会→建议）", en: "Insight cards (evidence → meaning → opportunity → recommendation)" },
-        { zh: "行动项（Backlog 需求 + 优先级 + 验证指标）", en: "Action items (backlog + priority + validation metrics)" },
-        { zh: "Design System 更新项（组件/模式/文案/状态）", en: "Design System updates (components/patterns/copy/states)" }
-      ];
-      document.getElementById('requiredArtifacts').innerHTML = artifacts.map(a => `<li>${currentLang === 'zh' ? a.zh : a.en}</li>`).join('');
+    function showStatusDetail(id) {
+      const s = DATA.status.find(x => x.id === id);
+      showModal(currentLang === 'zh' ? s.title : s.titleEn, `
+        <div style="display: grid; gap: 24px;">
+          <div><h4 style="color: var(--accent); margin-bottom: 8px;">摘要 / Summary</h4><p>${currentLang === 'zh' ? s.summary : s.summaryEn}</p></div>
+          <div><h4 style="color: var(--accent); margin-bottom: 8px;">核心洞察 / Insights</h4><p>${currentLang === 'zh' ? s.insights : s.insightsEn}</p></div>
+          <div><h4 style="color: var(--accent); margin-bottom: 8px;">行动项 / Actions</h4><p>${currentLang === 'zh' ? s.actions : s.actionsEn}</p></div>
+        </div>
+      `);
     }
 
-    function renderGovLists() {
-      const risks = { zh: ["删除/格式化（不可逆）", "存储池/RAID 改动", "权限与共享设置", "远程访问与安全相关开关", "恢复/回滚与数据一致性"], en: ["Delete/format (irreversible)", "Storage pool/RAID changes", "Permissions & sharing", "Remote access/security toggles", "Recovery/rollback & consistency"] };
-      const decisions = { zh: ["结论必须附证据（原话/截图/时间戳）", "每条洞察必须对应行动与验收", "优先级明确（Impact×Effort / RICE）", "说明适用人群与边界（新手/管理员）", "上线后定义验证指标并回看"], en: ["Evidence-linked (quotes/screenshots/timestamps)", "Every insight maps to action & acceptance", "Clear prioritization (Impact×Effort / RICE)", "Segment & boundary clarified (novice/admin)", "Define post-release metrics and review"] };
-      const usability = { zh: ["任务完成率（S/P/F）", "时长（Time-on-task）", "错误率与严重度", "犹豫点次数（停顿/反复确认）", "SEQ / SUS（可选）"], en: ["Task success (S/P/F)", "Time-on-task", "Error rate & severity", "Hesitation markers", "SEQ / SUS (optional)"] };
-      const trust = { zh: ["信任度（1–7）", "可控感（1–7）", "告警理解正确率", "误操作率（删除/权限）", "回滚/撤销使用率与成功率"], en: ["Trust score (1–7)", "Perceived control (1–7)", "Alert comprehension accuracy", "Misoperation rate", "Rollback/undo usage & success"] };
-
-      document.getElementById('riskList').innerHTML = risks[currentLang].map(x => `<li>${x}</li>`).join('');
-      document.getElementById('decisionList').innerHTML = decisions[currentLang].map(x => `<li>${x}</li>`).join('');
-      document.getElementById('metricUsability').innerHTML = usability[currentLang].map(x => `<li>${x}</li>`).join('');
-      document.getElementById('metricTrust').innerHTML = trust[currentLang].map(x => `<li>${x}</li>`).join('');
+    function showMethodDetail(id) {
+      const m = DATA.methods.find(x => x.id === id);
+      showModal(currentLang === 'zh' ? m.title : m.titleEn, `
+        <div style="display: grid; gap: 24px;">
+          <div><h4 style="color: var(--accent); margin-bottom: 8px;">适用场景</h4><p>${currentLang === 'zh' ? m.desc : m.descEn}</p></div>
+          <div><h4 style="color: var(--accent); margin-bottom: 8px;">产出物</h4><p>标准化研究报告、洞察卡片</p></div>
+        </div>
+      `);
     }
 
-    function setupEventListeners() {
-      document.getElementById('langBtn').onclick = () => {
-        currentLang = currentLang === 'zh' ? 'en' : 'zh';
-        renderAll();
-      };
-      document.getElementById('searchInput').oninput = () => {
-        renderStudies();
-        renderMethods();
-        renderTemplates();
-      };
+    function showTemplatePreview(id) {
+      const t = DATA.templates.find(x => x.id === id);
+      showModal(currentLang === 'zh' ? t.title : t.titleEn, `
+        <pre style="background: var(--card-bg); padding: 20px; border-radius: 12px; white-space: pre-wrap; font-family: monospace; border: 1px solid var(--card-border); color: var(--text-primary);">
+${currentLang === 'zh' ? t.content : t.contentEn}
+        </pre>
+        <button class="btn-primary" style="margin-top: 20px; width: 100%;" onclick="copyText(\`${currentLang === 'zh' ? t.content : t.contentEn}\`)">${I18N[currentLang].btnCopy}</button>
+      `);
     }
 
-    function openModal(title, content) {
+    function showTemplate(tag) {
+      const t = DATA.templates.find(x => x.tag.toLowerCase() === tag.toLowerCase()) || DATA.templates[0];
+      showTemplatePreview(t.id);
+    }
+
+    function showModal(title, body) {
       document.getElementById('modalTitle').textContent = title;
-      document.getElementById('modalBody').innerHTML = content;
+      document.getElementById('modalBody').innerHTML = body;
       document.getElementById('modalOverlay').classList.add('active');
     }
 
@@ -801,71 +829,21 @@
       document.getElementById('modalOverlay').classList.remove('active');
     }
 
-    function openStudyModal(id) {
-      const s = DATA.studies.find(x => x.id === id);
-      const content = `
-        <div style="display: grid; gap: 24px;">
-          <div>
-            <h4 style="color: var(--accent); margin-bottom: 8px;">${currentLang === 'zh' ? '摘要' : 'Summary'}</h4>
-            <p>${s.summary[currentLang]}</p>
-          </div>
-          <div>
-            <h4 style="color: var(--accent); margin-bottom: 8px;">${currentLang === 'zh' ? '洞察' : 'Insights'}</h4>
-            <ul class="gov-list">${s.insights[currentLang].map(i => `<li>${i}</li>`).join('')}</ul>
-          </div>
-          <div>
-            <h4 style="color: var(--accent); margin-bottom: 8px;">${currentLang === 'zh' ? '行动项' : 'Actions'}</h4>
-            <ul class="gov-list">${s.actions[currentLang].map(a => `<li>${a}</li>`).join('')}</ul>
-          </div>
-        </div>
-      `;
-      openModal(s.topic[currentLang], content);
-    }
-
-    function openMethodModal(id) {
-      const m = DATA.methods.find(x => x.id === id);
-      const content = `
-        <div style="display: grid; gap: 24px;">
-          <div>
-            <h4 style="color: var(--accent); margin-bottom: 8px;">${currentLang === 'zh' ? '适用场景' : 'Use When'}</h4>
-            <p>${m[currentLang].when}</p>
-          </div>
-          <div>
-            <h4 style="color: var(--accent); margin-bottom: 8px;">${currentLang === 'zh' ? '产出物' : 'Outputs'}</h4>
-            <ul class="gov-list">${m[currentLang].outputs.map(o => `<li>${o}</li>`).join('')}</ul>
-          </div>
-          <div>
-            <h4 style="color: var(--accent); margin-bottom: 8px;">${currentLang === 'zh' ? '备注' : 'Notes'}</h4>
-            <p>${m[currentLang].notes}</p>
-          </div>
-        </div>
-      `;
-      openModal(m[currentLang].title, content);
-    }
-
-    function openTplModal(id) {
-      const t = DATA.templates.find(x => x.id === id);
-      const content = `
-        <div style="display: grid; gap: 16px;">
-          <p style="color: var(--text-secondary);">${t[currentLang].desc}</p>
-          <div class="pre-box">${t[currentLang].content}</div>
-          <button class="btn-primary" onclick="copyText('${t[currentLang].content.replace(/'/g, "\\'").replace(/\n/g, "\\n")}')">${currentLang === 'zh' ? '复制模板内容' : 'Copy Template'}</button>
-        </div>
-      `;
-      openModal(t[currentLang].title, content);
-    }
-
     function copyText(text) {
       navigator.clipboard.writeText(text).then(() => {
-        alert(currentLang === 'zh' ? '已复制到剪贴板' : 'Copied to clipboard');
+        const toast = document.getElementById('toast');
+        toast.textContent = I18N[currentLang].toastCopy;
+        toast.classList.add('active');
+        setTimeout(() => toast.classList.remove('active'), 2000);
       });
     }
 
-    function copyNaming() {
-      copyText("[YYYY-MM-DD]_[Surface]_[Topic]_[Method]_[Version]");
-    }
+    document.getElementById('langToggle').onclick = toggleLang;
+    document.getElementById('themeToggle').onclick = toggleTheme;
+    document.getElementById('searchInput').oninput = renderStatus;
 
-    init();
+    // Init
+    updateUI();
   </script>
 </body>
 </html>
