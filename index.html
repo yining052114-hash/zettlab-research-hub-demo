@@ -133,17 +133,17 @@
     .hero p { font-size: 18px; color: var(--text-secondary); max-width: 800px; margin: 0 auto 32px; }
     .hero-actions { display: flex; justify-content: center; gap: 16px; }
     .btn-primary {
-      background: var(--text-primary);
-      color: var(--bg);
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-primary);
       padding: 12px 24px;
       border-radius: 99px;
       font-weight: 600;
       text-decoration: none;
-      transition: transform 0.2s;
-      border: none;
+      transition: all 0.2s;
       cursor: pointer;
     }
-    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-primary:hover { background: var(--text-primary); color: var(--bg); transform: translateY(-2px); }
     .btn-secondary {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -182,13 +182,19 @@
       position: sticky;
       top: 72px;
       z-index: 90;
-      background: var(--filter-bg);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--card-border);
+      background: transparent;
+      backdrop-filter: none;
+      border-bottom: 1px solid transparent;
       margin-bottom: 32px;
       width: 100%;
       display: flex;
       justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .filter-container.is-sticky {
+      background: var(--bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--card-border);
     }
     .filter-bar {
       width: 100%;
@@ -960,6 +966,20 @@
       renderMethods();
       renderTemplates();
     }
+
+    // Sticky header effect
+    window.addEventListener('scroll', () => {
+      const filterContainers = document.querySelectorAll('.filter-container');
+      filterContainers.forEach(container => {
+        const rect = container.getBoundingClientRect();
+        // If the container is at its sticky position (top: 72px)
+        if (rect.top <= 73) {
+          container.classList.add('is-sticky');
+        } else {
+          container.classList.remove('is-sticky');
+        }
+      });
+    });
 
     // Initial Render
     updateUI();
