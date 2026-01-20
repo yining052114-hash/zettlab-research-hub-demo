@@ -81,7 +81,7 @@
       justify-content: space-between;
     }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); }
-    .brand-logo { width: 32px; height: 32px; background: linear-gradient(135deg, #7c3aed, #3b82f6); border-radius: 10px; }
+    .brand-logo { width: 32px; height: 32px; border-radius: 4px; object-fit: contain; }
     .brand-text strong { font-size: 18px; font-weight: 700; display: block; }
     .brand-text span { font-size: 12px; color: var(--text-secondary); }
 
@@ -131,8 +131,7 @@
     .hero { padding: 80px 0 60px; text-align: center; }
     .hero h1 { font-size: 56px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em; }
     .hero p { font-size: 18px; color: var(--text-secondary); max-width: 800px; margin: 0 auto 32px; }
-    .hero-actions { display: flex; justify-content: center; gap: 16px; }
-    .btn-primary {
+    .hero-actions { display: flex; justify-content: center; gap: 16    .btn-primary, .btn-secondary {
       background: transparent;
       border: 1px solid var(--card-border);
       color: var(--text-primary);
@@ -142,22 +141,18 @@
       text-decoration: none;
       transition: all 0.2s;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      line-height: 1;
     }
-    .btn-primary:hover { background: var(--text-primary); color: var(--bg); transform: translateY(-2px); }
-    .btn-secondary {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text-primary);
-      padding: 12px 24px;
-      border-radius: 99px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s;
-      cursor: pointer;
+    .btn-primary:hover, .btn-secondary:hover { 
+      background: var(--text-primary); 
+      color: var(--bg); 
+      transform: translateY(-2px); 
+      border-color: var(--text-primary);
     }
-    .btn-secondary:hover { background: var(--card-border); }
-
-    /* Value Cards */
     .value-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
     .value-card {
       background: var(--card-bg);
@@ -186,7 +181,8 @@
       backdrop-filter: none;
       border-bottom: 1px solid transparent;
       margin-bottom: 32px;
-      width: 100%;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
       display: flex;
       justify-content: center;
       transition: all 0.3s ease;
@@ -428,13 +424,13 @@
 
   <header class="topbar">
     <div class="container topbar-inner">
-      <a href="#" class="brand">
-        <div class="brand-logo"></div>
-        <div class="brand-text">
-          <strong>Zettlab Research Hub</strong>
-          <span id="brandSub">用证据驱动 NAS 体验决策</span>
-        </div>
-      </a>
+        <a href="#" class="brand">
+          <img src="logo.png" alt="Zettlab Logo" class="brand-logo">
+          <div class="brand-text">
+            <strong>Zettlab Research Hub</strong>
+            <span>用证据驱动 NAS 体验决策</span>
+          </div>
+        </a>
       <nav class="nav">
         <a href="#overview" class="active">首页</a>
         <a href="#sop">SOP 流程</a>
@@ -457,11 +453,11 @@
     <section class="hero" id="overview">
       <h1 id="heroTitle">用研规范与知识库</h1>
       <p id="heroDesc">为 NAS 桌面端、Web 管理端及移动端打造的标准化研究体系，确保研究结果可复现、可行动、可验证。</p>
-      <div class="hero-actions">
-        <button class="btn-primary" onclick="openTemplate(1)" id="ctaStart">发起研究 / Start Study</button>
-        <button class="btn-secondary" onclick="openTemplate(2)" id="ctaUT">运行 UT / Run UT</button>
-        <button class="btn-secondary" onclick="openTemplate(5)" id="ctaRepo">归档规范 / Repository</button>
-      </div>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="showTemplate('plan')">发起研究 / Start Study</button>
+          <button class="btn-primary" onclick="showTemplate('ut')">运行 UT / Run UT</button>
+          <button class="btn-primary" onclick="showTemplate('archive')">归档规范 / Repository</button>
+        </div>
 
       <div class="value-grid">
         <div class="value-card">
