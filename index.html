@@ -314,12 +314,14 @@
       padding: 12px 0;
       border-bottom: 1px solid var(--card-border);
       font-size: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: block;
+      text-align: left;
     }
     .gov-list li:last-child { border-bottom: none; }
-    .gov-list li::before { content: "•"; color: var(--accent); margin-right: 12px; }
+    .gov-list li::before { content: "•"; color: var(--accent); margin-right: 8px; }
+    .gov-list li div { display: inline; }
+    .gov-list li strong { display: block; margin-bottom: 4px; }
+    .gov-list li div[style] { display: block; }
 
     /* Repository */
     .repo-section {
@@ -458,7 +460,7 @@
       <h1 id="heroTitle">用研规范与知识库</h1>
       <p id="heroDesc">为 NAS 桌面端、Web 管理端及移动端打造的标准化研究体系，确保研究结果可复现、可行动、可验证。</p>
       <div class="hero-actions">
-        <button class="btn-primary" onclick="openTemplate(1)" id="ctaStart">发起研究 / Start Study</button>
+        <button class="btn-secondary" onclick="openTemplate(1)" id="ctaStart">发起研究 / Start Study</button>
         <button class="btn-secondary" onclick="openTemplate(2)" id="ctaUT">运行 UT / Run UT</button>
         <button class="btn-secondary" onclick="openTemplate(5)" id="ctaRepo">归档规范 / Repository</button>
       </div>
