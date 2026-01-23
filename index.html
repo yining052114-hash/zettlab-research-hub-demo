@@ -186,9 +186,10 @@
       backdrop-filter: none;
       border-bottom: 1px solid transparent;
       margin-bottom: 32px;
-      width: 100%;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       transition: all 0.3s ease;
     }
     .filter-container.is-sticky {
@@ -198,12 +199,12 @@
     }
     .filter-bar {
       width: 100%;
-      max-width: 1200px;
+      max-width: none;
       padding: 12px 24px;
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: flex-start;
       margin: 0;
     }
     .filter-chip {
